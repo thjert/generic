@@ -1,0 +1,61 @@
+---
+
+- name: disable selinux
+  selinux:
+    state=disabled
+    
+- name: disable iptables
+  service:
+    name=iptables
+    state=stopped
+    enabled=no
+ 
+- name: install packages
+  yum:
+    name={{ item }}
+    state=present
+  with_items:
+    - binutils
+    - compat-libcap1
+    - compat-libstdc++-33
+    - gcc
+    - gcc-c++
+    - glibc
+    - glibc-devel
+    - libaio
+    - libaio-devel
+    - libgcc
+    - libstdc++
+    - libstdc++-devel
+    - make
+    - openmotif
+    - openmotif22
+    - sysstat
+    
+- name: create group
+  group:
+    name={{ oracle_install_group }}
+    gid={{ oracle_install_group_id }}
+    state=present
+    
+- name: create user
+  user:
+    name={{ oracle_install_user }}
+    state=present
+    createhome=yes
+    group={{ oracle_install_group_id }}
+    password={{ oracle_install_password }}
+    
+- template: 
+    src=roles/common/templates/linux/sysctl_conf.j2 
+    dest=/etc/sysctl.conf
+    owner=root
+    group=root
+    mode=0644
+    
+- template: 
+    src=roles/common/templates/linux/limits_conf.j2 
+    dest=/etc/security/limits.conf
+    owner=root
+    group=root
+    mode=0644

@@ -1,0 +1,17 @@
+# /etc/ansible/roles/wls_deploy_config/tasks/main.yml
+ 
+- name: create create_deployment_environment.py
+  template:
+    src=roles/common/templates/weblogic/create_deployment_environment_py.j2 
+    dest="{{ create_deploy_domain_py }}"
+    #owner="{{ oracle_install_user }}"
+    #group="{{ oracle_install_group }}"
+    #mode=0644
+    
+- name: create deployment environment
+  shell: /bin/su - "{{ oracle_install_user }}" -c "{{ wlst_sh }} -loadProperties {{ environment_properties }} {{ create_deploy_domain_py }}"
+    creates="{{ domain_configuration_home }}/config/deploy_config.txt"
+    
+- name: create template
+  shell: /bin/su - "{{ oracle_install_user }}" -c "{{ pack_sh }} -managed=true -domain={{ domain_configuration_home }} -template={{ wls_template_file }} -template_name={{ domain_name }}"
+    creates="{{ wls_template_file }}"

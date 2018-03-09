@@ -1,0 +1,9 @@
+# /etc/ansible/adminserver.yml
+- hosts: adminserver
+  user: root
+  
+  roles:
+    - common
+    - wls_install
+    - wls_basic_config
+    - wls_deploy_config

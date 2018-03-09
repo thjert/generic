@@ -1,0 +1,8 @@
+# /etc/ansible/managedservers/yml
+- hosts: managedservers
+  user: root
+  
+  roles:
+    - common
+    - wls_install
+    - wls_remote_config

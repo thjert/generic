@@ -1,0 +1,43 @@
+# /etc/ansible/roles/wls_remote_config/tasks/main.yml
+ 
+- name: create domain
+  shell: /bin/su - "{{ oracle_install_user }}" -c "{{ unpack_sh }} -domain={{ domain_configuration_home }} -app_dir={{ domain_application_home }} -nodemanager_type={{ node_manager_type }} -nodemanager_home={{ node_manager_home }} -template={{ wls_template_file }}"
+    creates="{{ set_domain_env_sh }}"
+ 
+- name: create application home directory
+  file:
+    path="{{ domain_application_home }}"
+    state=directory
+    owner="{{ oracle_install_user }}"
+    group="{{ oracle_install_group }}"
+    mode=0755
+    
+- name: create nodemanager.properties
+  template:
+    src=roles/common/templates/weblogic/nodemanager_properties.j2 
+    dest="{{ node_manager_properties }}"
+    owner="{{ oracle_install_user }}"
+    group="{{ oracle_install_group }}"
+    mode=0644
+    
+- name: create setUserOverrides.sh
+  template:
+    src=roles/common/templates/weblogic/set_user_overrides_sh.j2 
+    dest="{{ set_user_overrides_sh }}"
+    owner="{{ oracle_install_user }}"
+    group="{{ oracle_install_group }}"
+    mode=0744
+    
+- name: create nodemanager init script
+  template:
+    src=roles/common/templates/weblogic/nodemanager.j2 
+    dest="{{ node_manager_service }}"
+    owner="{{ oracle_install_user }}"
+    group="{{ oracle_install_group }}"
+    mode=0744
+    
+- name: enable and start nodemanager service
+  service:
+    name=nodemanager
+    state=started
+    enabled=yes

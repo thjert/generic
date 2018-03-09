@@ -1,0 +1,19 @@
+#!/bin/sh
+ 
+if [ "${ADMIN_URL}" = "" ] ; then
+    USER_MEM_ARGS="{{ admin_server_mem_args }} {{ throughput_garbage_collector_args }}"
+else
+    case ${SERVER_NAME} in
+        server_*)
+            USER_MEM_ARGS="{{ managed_server_mem_args }} {{ pausetime_garbage_collector_args }} {{ monitoring_args }}"
+        ;;
+        coherence_server_1)
+            USER_MEM_ARGS="{{ coherence_server_mem_args }} {{ pausetime_garbage_collector_args }} {{ monitoring_args }} {{ coherence_monitoring_args }}"
+        ;;
+        coherence_server_*)
+            USER_MEM_ARGS="{{ coherence_server_mem_args }} {{ pausetime_garbage_collector_args }} {{ monitoring_args }}"
+        ;;
+    esac
+fi
+ 
+export USER_MEM_ARGS

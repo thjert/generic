@@ -1,0 +1,57 @@
+# /etc/ansible/roles/wls_basic_config/tasks/main.yml
+ 
+- name: create create_basic_domain.py
+  template:
+    src=roles/common/templates/weblogic/create_basic_domain_py.j2 
+    dest="{{ create_basic_domain_py }}"
+    #owner="{{ oracle_install_user }}"
+    #group="{{ oracle_install_group }}"
+    #mode=0644
+    
+- name: create basic domain
+  shell: /bin/su - "{{ oracle_install_user }}" -c "{{ wlst_sh }} -loadProperties {{ environment_properties }} {{ create_basic_domain_py }}"
+    creates="{{ config_xml }}"
+    
+- name: create application home directory
+  file:
+    path="{{ domain_application_home }}"
+    state=directory
+    owner="{{ oracle_install_user }}"
+    group="{{ oracle_install_group }}"
+    mode=0755
+    
+- name: create nodemanager.properties
+  template:
+    src=roles/common/templates/weblogic/nodemanager_properties.j2 
+    dest="{{ node_manager_properties }}"
+    owner="{{ oracle_install_user }}"
+    group="{{ oracle_install_group }}"
+    mode=0644
+    
+- name: create setUserOverrides.sh
+  template:
+    src=roles/common/templates/weblogic/set_user_overrides_sh.j2 
+    dest="{{ set_user_overrides_sh }}"
+    owner="{{ oracle_install_user }}"
+    group="{{ oracle_install_group }}"
+    mode=0744
+    
+- name: create nodemanager init script
+  template:
+    src=roles/common/templates/weblogic/nodemanager.j2 
+    dest="{{ node_manager_service }}"
+    owner="{{ oracle_install_user }}"
+    group="{{ oracle_install_group }}"
+    mode=0744
+    
+- name: enable and start nodemanager service
+  service:
+    name=nodemanager
+    state=started
+    enabled=yes
+  register: nodemanager_started
+    
+- name: start admin server
+  shell: /bin/su - "{{ oracle_install_user }}" -c "{{ admin_server_start_service }}"
+    creates="{{ admin_server_lock_file }}"
+  when: nodemanager_started|success

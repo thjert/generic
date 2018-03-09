@@ -1,0 +1,92 @@
+# /etc/ansible/roles/wls_install/tasks/main.yml
+ 
+- name: create root directory
+  file:
+    path={{ root_directory }}
+    state=directory
+    owner="{{ oracle_install_user }}"
+    group="{{ oracle_install_group }}"
+    mode=0755
+    
+- name: create scripts directory
+  file:
+    path="{{ scripts_directory }}"
+    state=directory
+    owner="{{ oracle_install_user }}"
+    group="{{ oracle_install_group }}"
+    mode=0755
+    
+- name: copy shell scripts
+  copy: 
+    src=roles/common/files/weblogic/lifecycle/shell/
+    dest="{{ scripts_directory }}"
+    owner="{{ oracle_install_user }}"
+    group="{{ oracle_install_group }}"
+    mode=0744
+    
+- name: copy python scripts
+  copy:
+    src=roles/common/files/weblogic/lifecycle/python/
+    dest="{{ scripts_directory }}"
+    owner="{{ oracle_install_user }}"
+    group="{{ oracle_install_group }}"
+    mode=0644
+ 
+- name: create SetEnvironmentVariables.sh
+  template:
+    src=roles/common/templates/weblogic/set_environment_variables_sh.j2 
+    dest="{{ setenvironmentvariables_sh }}"
+    owner="{{ oracle_install_user }}"
+    group="{{ oracle_install_group }}"
+    mode=0744
+    
+- name: create environment.properties
+  template:
+    src=roles/common/templates/weblogic/environment_properties.j2 
+    dest="{{ environment_properties }}"
+    owner="{{ oracle_install_user }}"
+    group="{{ oracle_install_group }}"
+    mode=0644
+    
+- name: create silent install file
+  template:
+    src=roles/common/templates/weblogic/silent_weblogic_txt.j2 
+    dest="{{ silent_install_file }}"
+    #owner="{{ oracle_install_user }}"
+    #group="{{ oracle_install_group }}"
+    #mode=0644
+  register: silent_install_file_created
+    
+- name: create oraInst.loc
+  template:
+    src=roles/common/templates/weblogic/ora_inst_loc.j2 
+    dest="{{ ora_inst_loc }}"
+    #owner="{{ oracle_install_user }}"
+    #group="{{ oracle_install_group }}"
+    #mode=0644
+  register: orainst_loc_created
+    
+- name: install java virtual machine
+  shell: /bin/su - "{{ oracle_install_user }}" -c "/bin/tar xzf {{ jvm_installer }} -C {{ runtime_home }}"
+    creates="{{ java }}"
+  register: jvm_installed
+  
+#- name: debug registered values
+#  debug: 
+#    var={{ item }}
+#  with_items:
+#    - silent_install_file_created
+#    - orainst_loc_created
+#    - jvm_installed
+  
+- name: set entropy gathering device
+  replace:
+    dest="{{ java_security }}"
+    regexp='^securerandom\.source=file:/dev/random'
+    replace="securerandom.source={{ securerandom_source }}"
+  when: jvm_installed|success
+    
+- name: install weblogic server
+  shell: /bin/su - "{{ oracle_install_user }}" -c "{{ java }} -Xms512m -Xmx512m -jar {{ weblogic_installer }} -silent -responseFile {{ silent_install_file }} -invPtrLoc {{ ora_inst_loc }}"
+    creates="{{ wlst_sh }}"
+  when: jvm_installed|success and silent_install_file_created|success and orainst_loc_created|success

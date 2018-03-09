@@ -1,0 +1,68 @@
+import os.path;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
+ 
+print 'DEFINE VARIABLES FOR DOMAIN CREATION';
+cluster_name='{{ cluster_name }}';
+machine_listen_addresses_string='{{ machine_listen_addresses }}';
+machine_listen_addresses=machine_listen_addresses_string.split(',');
+machine_user_id='{{ machine_user_id }}';
+machine_group_id='{{ machine_group_id }}';
+number_of_managed_servers_per_machine={{ number_of_managed_servers_per_machine }};
+managed_server_listen_port_start={{ managed_server_listen_port_start }};
+ 
+jms_system_resource_name='{{ jms_system_resource_name }}';
+sub_deployment_name='{{ sub_deployment_name }}';
+connection_factory_names_string='{{ connection_factory_names }}';
+connection_factory_names=connection_factory_names_string.split(',');
+connection_factory_jndi_names_string='{{ connection_factory_jndi_names }}';
+connection_factory_jndi_names=connection_factory_jndi_names_string.split(',');
+distributed_queue_names_string='{{ distributed_queue_names }}';
+distributed_queue_names=distributed_queue_names_string.split(',');
+distributed_queue_jndi_names_string='{{ distributed_queue_jndi_names }}';
+distributed_queue_jndi_names=distributed_queue_jndi_names_string.split(',');
+distributed_error_queue_names_string='{{ distributed_error_queue_names }}';
+distributed_error_queue_names=distributed_error_queue_names_string.split(',');
+distributed_error_queue_jndi_names_string='{{ distributed_error_queue_jndi_names }}';
+distributed_error_queue_jndi_names=distributed_error_queue_jndi_names_string.split(',');
+ 
+data_source_names_string='{{ data_source_names }}';
+data_source_names=data_source_names_string.split(',');
+data_source_jndi_names_string='{{ data_source_jndi_names }}';
+data_source_jndi_names=data_source_jndi_names_string.split(',');
+data_source_users_string='{{ data_source_users }}';
+data_source_users=data_source_users_string.split(',');
+data_source_passwords_string='{{ data_source_passwords }}';
+data_source_passwords=data_source_passwords_string.split(',');
+data_source_url='{{ data_source_url }}';
+data_source_ons_node_list='{{ data_source_ons_node_list }}';
+data_source_driver='{{ data_source_driver }}';
+data_source_test='{{ data_source_test }}';
+data_source_save_transaction='{{ data_source_save_transaction }}';
+ 
+configure_ssl='{{ configure_ssl }}';
+managed_server_ssl_listen_port_start='{{ managed_server_ssl_listen_port_start }}';
+config_type='{{ config_type }}';
+store_type='{{ store_type }}';
+key_store_file_name='{{ key_store_file_name }}';
+key_store_pass_phrase='{{ key_store_pass_phrase }}';
+trust_store_file_name='{{ trust_store_file_name }}';
+trust_store_pass_phrase='{{ trust_store_pass_phrase }}';
+private_key_alias='{{ private_key_alias }}';
+private_key_pass_phrase='{{ private_key_pass_phrase }}';
+ 
+print 'CREATE VARIABLES';
+domain_application_home='{{ domain_application_home }}';
+domain_configuration_home='{{ domain_configuration_home }}';
+domain_name='{{ domain_name }}';
+fusion_middleware_home='{{ fusion_middleware_home }}';
+java_home='{{ java_home }}';
+middleware_home='{{ middleware_home }}';
+node_manager_home='{{ node_manager_home }}';
+weblogic_home='{{ weblogic_home }}';
+ 
+admin_server_url = 't3://' + admin_server_listen_address + ':' + admin_server_listen_port;
+admin_server_config_file = domain_configuration_home + '/admin_server_config_file.properties';
+admin_server_key_file = domain_configuration_home + '/admin_server_key_file.properties';

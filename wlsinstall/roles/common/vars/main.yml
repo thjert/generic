@@ -1,0 +1,177 @@
+##### OS settings #####
+# number of open files
+number_of_open_files:            8192
+ 
+# memory that will be used for huge pages
+memory_to_reserve_in_mega_bytes: 256
+ 
+number_of_huge_pages:            "{{ memory_to_reserve_in_mega_bytes // 2 }}"
+mem_lock:                        "{{ 2048 * (memory_to_reserve_in_mega_bytes // 2) }}"
+
+
+##### SetEnvironmentVariables.sh #####
+root_directory:            "/u01"
+ 
+# Directory where the software to be installed is located
+software_directory:        "/mnt/hgfs/wls_temp"
+    
+# Name of JVM file that is used in the installation
+jvm_file_name:             "jdk-8u31-linux-x64.tar.gz"
+    
+# Name of the WebLogic file that is used in the installation
+weblogic_file_name:        "fmw_12.1.3.0.0_wls.jar"
+    
+# shared directory for the templates that is used by pack and unpack
+templates_directory:       "/mnt/hgfs/wls_temp"
+ 
+# The scripts create files that are placed in this directory
+temporary_directory:       "{{ software_directory }}"
+    
+# WebLogic and JVM installer locations
+jvm_installer:             "{{ software_directory }}/{{ jvm_file_name }}"
+weblogic_installer:        "{{ software_directory }}/{{ weblogic_file_name }}"
+    
+# Base directory
+base_directory:            "{{ root_directory }}/app/oracle"
+ 
+# Directory that will used for the installaton and configuration
+runtime_home:              "{{ base_directory }}/weblogic12.1.3"
+ 
+# Directory where the JVM will be installed
+java_home:                 "{{ runtime_home }}/jdk1.8.0_31"
+ 
+# Directory that will be used as the middleware home (holds software binaries)
+middleware_home:           "{{ runtime_home }}/installation"
+    
+# Location of the Oracle inventory
+oracle_inventory_home:     "{{ base_directory }}/oraInventory"
+ 
+# User and Group under which the software needs to be installed
+oracle_install_user:       "weblogic"
+oracle_install_password:   "$6$y718uwhsay612wyq$jnQ8mm4TVWKnEr3NGFhFHh09rE4IyKsdyGTg3q0unKzeb7WvvqnoR6BflkmIEvOctoM0mQ7xXoCqd55dDoZf/0"
+oracle_install_group:      "javainstall"
+oracle_install_group_id:   "1000"
+ 
+# Name of the domain
+domain_name:               "tryout_domain"
+ 
+# Directory where the configuration will be placed
+configuration_home:        "{{ runtime_home }}/configuration"
+ 
+# Domain home (directory that contains the domain configuration files)
+domain_configuration_home: "{{ configuration_home }}/domains/{{ domain_name }}"
+ 
+# Domain application home (directory in which application related artifacts are placed)
+domain_application_home:   "{{ configuration_home }}/applications/{{ domain_name }}"
+ 
+# Node manager home (directory that contains the node manager configuration files)
+node_manager_home:         "{{ configuration_home }}/nodemanagers/{{ domain_name }}"
+ 
+# Default homes that are created when the software is installed
+coherence_home:            "{{ middleware_home }}/coherence"
+fusion_middleware_home:    "{{ middleware_home }}/oracle_common"
+weblogic_home:             "{{ middleware_home }}/wlserver"
+    
+# Directory where the scripts for the WebLogic lifecycle are placed
+scripts_directory:         "{{ runtime_home }}/scripts"
+ 
+    
+##### environment.properties #####
+node_manager_username:       "nodemanager"
+node_manager_password:       "snippets12c"
+node_manager_listen_port:    "5556"
+node_manager_mode:           "plain"
+admin_server_name:           "AdminServer"
+admin_username:              "weblogic"
+admin_password:              "snippets12c"
+admin_server_listen_port:    "7001"
+admin_server_listen_address: "machine1.ms.com"
+ 
+ 
+##### files #####
+set_user_overrides_sh:      "{{ domain_configuration_home }}/bin/setUserOverrides.sh"
+set_domain_env_sh:          "{{ domain_configuration_home }}/bin/setDomainEnv.sh"
+config_xml:                 "{{ domain_configuration_home }}/config/config.xml"
+admin_server_lock_file:     "{{ domain_configuration_home }}/servers/{{ admin_server_name }}/data/nodemanager/{{ admin_server_name }}.lck"
+java_security:              "{{ java_home }}/jre/lib/security/java.security"
+node_manager_properties:    "{{ node_manager_home }}/nodemanager.properties"
+node_manager_service:       "/etc/rc.d/init.d/nodemanager"
+node_manager_type:          "CustomLocationNodeManager"
+environment_properties:     "{{ scripts_directory }}/environment.properties"
+setenvironmentvariables_sh: "{{ scripts_directory }}/SetEnvironmentVariables.sh"
+wls_template_file:          "{{ templates_directory }}/{{ domain_name }}.jar"
+silent_install_file:        "{{ temporary_directory }}/silent-weblogic.txt"
+ora_inst_loc:               "{{ temporary_directory }}/oraInst.loc"
+create_basic_domain_py:     "{{ temporary_directory }}/create_basic_domain.py"
+create_deploy_domain_py:    "{{ temporary_directory }}/create_deployment_environment.py"
+ 
+ 
+##### executors #####
+java:                       "{{ java_home }}/bin/java"
+admin_server_start_service: "{{ scripts_directory }}/AdminServerStartService.sh"
+pack_sh:                    "{{ weblogic_home }}/common/bin/pack.sh"
+unpack_sh:                  "{{ weblogic_home }}/common/bin/unpack.sh"
+wlst_sh:                    "{{ weblogic_home }}/common/bin/wlst.sh"
+
+
+##### JVM parameters #####
+# heap size
+admin_server_mem_args:             "-Xms512m -Xmx512m"
+managed_server_mem_args:           "-Xms512m -Xmx512m"
+coherence_server_mem_args:         "-Xms512m -Xmx512m"
+ 
+# garbage collector settings
+throughput_garbage_collector_args: "-XX:NewRatio=3 -XX:SurvivorRatio=128 -XX:MaxTenuringThreshold=0 -XX:+UseParallelGC -XX:MaxGCPauseMillis=200 -XX:GCTimeRatio=19 -XX:+UseParallelOldGC"
+pausetime_garbage_collector_args:  "-XX:+UseG1GC -XX:MaxGCPauseMillis=200"
+ 
+# large pages settings
+large_pages_args:                  "-XX:LargePageSizeInBytes=2048k -XX:+UseLargePages"
+ 
+# security settings
+security_args:                     "-Dweblogic.security.SSL.minimumProtocolVersion=TLSv1.2"
+securerandom_source:               "file:/dev/./urandom"
+ 
+# monitoring settings
+monitoring_args:                   "-XX:+UnlockCommercialFeatures -XX:+FlightRecorder"
+coherence_monitoring_args:         "-Dtangosol.coherence.management=all -Dtangosol.coherence.management.remote=true"
+garbage_collector_monitoring_args: "-verbosegc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:/tmp/${SERVER_NAME}.out -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=10 -XX:GCLogFileSize=5000K"
+compiler_monitoring_args:          "-XX:+PrintCompilation -XX:+UnlockDiagnosticVMOptions -XX:+PrintInlining"
+
+##### domain parameters #####
+cluster_name:                          "cluster"
+machine_listen_addresses:              "machine1.ms.com,machine2.ms.com"
+machine_user_id:                       "{{ oracle_install_user }}"
+machine_group_id:                      "{{ oracle_install_group }}"
+number_of_managed_servers_per_machine: "1"
+managed_server_listen_port_start:      "9001"
+ 
+jms_system_resource_name:              "JmsSystemModule"
+sub_deployment_name:                   "JmsSystemModuleSubDeployment"
+connection_factory_names:              "ConnectionFactory"
+connection_factory_jndi_names:         "jms/ConnectionFactory"
+distributed_queue_names:               "CompanyDistributedQueue"
+distributed_queue_jndi_names:          "jms/CompanyQueue"
+distributed_error_queue_names:         "CompanyDistributedErrorQueue"
+distributed_error_queue_jndi_names:    "jms/CompanyErrorQueue"
+ 
+data_source_names:                     "DataSource"
+data_source_jndi_names:                "jdbc/exampleDS"
+data_source_users:                     "example"
+data_source_passwords:                 "example"
+data_source_url:                       "jdbc:oracle:thin:@//r-pc:1521/orcl12"
+data_source_ons_node_list:             "r-pc:6200,s-pc:6200"
+data_source_driver:                    "oracle.jdbc.OracleDriver"
+data_source_test:                      "SQL SELECT 1 FROM DUAL"
+data_source_save_transaction:          "no"
+ 
+configure_ssl:                         "no"
+managed_server_ssl_listen_port_start:  "10001"
+config_type:                           "CustomIdentityAndCustomTrust"
+store_type:                            "jks"
+key_store_file_name:                   "/home/weblogic/certs/machine1.keystore"
+key_store_pass_phrase:                 "somepassword"
+trust_store_file_name:                 "/home/weblogic/certs/machine1.truststore"
+trust_store_pass_phrase:               "somepassword"
+private_key_alias:                     "machine1.ms.com"
+private_key_pass_phrase:               "somepassword"
+
