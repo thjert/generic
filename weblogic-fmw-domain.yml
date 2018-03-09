@@ -11,7 +11,7 @@
     # Common properties. You may not delete this
     - wls-vars.yml
     # Infrastructure passwords
-    #- secrets.yml
+    - secrets.yml
   roles:
     - role: linux-wls
     - role: linux-jdk
