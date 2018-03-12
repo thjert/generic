@@ -1,0 +1,35 @@
+### Från en annan exempelinstallation ... Avsedd för fmw ...
+
+node_manager_username = str('{{ node_manager_username }}');
+node_manager_password = str('{{ node_manager_password }}');
+node_manager_listen_port = int('{{ node_manager_listen_port }}');
+node_manager_listen_address = str('{{ node_manager_listen_address }}');
+node_manager_mode = str('{{ node_manager_mode }}');
+ 
+admin_server_name = str('{{ admin_server_name }}');
+admin_username = str('{{ admin_username }}');
+admin_password = str('{{ admin_password }}');
+admin_server_listen_port = int('{{ admin_server_listen_port }}');
+admin_server_listen_address = str('{{ admin_server_listen_address }}');
+ 
+cluster_name = '{{ cluster_name }}';
+machine_listen_addresses = '{{ machine_listen_addresses }}'.split(',');
+machine_user_id = '{{ machine_user_id }}';
+machine_group_id = '{{ machine_group_id }}';
+number_of_managed_servers_per_machine = {{ number_of_managed_servers_per_machine }};
+managed_server_server_name_prefix = '{{ managed_server_server_name_prefix }}';
+managed_server_listen_port_start = {{ managed_server_listen_port_start }};
+ 
+data_source_url = '{{ data_source_url }}';
+data_source_driver = '{{ data_source_driver }}';
+data_source_rcu_user_prefix = '{{ data_source_rcu_user_prefix }}';
+data_source_rcu_password = '{{ data_source_rcu_password }}';
+data_source_test = '{{ data_source_test }}';
+ 
+file_store_directory = '{{ file_store_directory }}';
+ 
+server_groups = '{{ server_groups }}'.split(',');
+weblogic_template_name = '{{ weblogic_template_name }}';
+weblogic_template_version = '{{ weblogic_template_version }}';
+fmw_template_name = '{{ fmw_template_name }}';
+fmw_template_version = '{{ fmw_template_version }}';
