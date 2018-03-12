@@ -79,13 +79,15 @@ scripts_directory:         "{{ runtime_home }}/scripts"
 ##### environment.properties #####
 node_manager_username:       "nodemanager"
 node_manager_password:       "snippets12c"
+node_manager_listen_address:    "wls12c-r2-1"
 node_manager_listen_port:    "5556"
 node_manager_mode:           "plain"
 admin_server_name:           "AdminServer"
 admin_username:              "weblogic"
 admin_password:              "snippets12c"
 admin_server_listen_port:    "7001"
-admin_server_listen_address: "machine1.ms.com"
+#admin_server_listen_address: "machine1.ms.com"
+admin_server_listen_address: "wls12c-r2-1"
  
  
 ##### files #####
@@ -136,7 +138,8 @@ monitoring_args:                   "-XX:+UnlockCommercialFeatures -XX:+FlightRec
 coherence_monitoring_args:         "-Dtangosol.coherence.management=all -Dtangosol.coherence.management.remote=true"
 garbage_collector_monitoring_args: "-verbosegc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:/tmp/${SERVER_NAME}.out -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=10 -XX:GCLogFileSize=5000K"
 compiler_monitoring_args:          "-XX:+PrintCompilation -XX:+UnlockDiagnosticVMOptions -XX:+PrintInlining"
-
+##### managed server parameters #####
+managed_server_server_name_prefix:	"thjtest"
 ##### domain parameters #####
 cluster_name:                          "cluster"
 #machine_listen_addresses:              "machine1.ms.com,machine2.ms.com"
