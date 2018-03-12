@@ -9,9 +9,13 @@
     #mode=0644
     
 - name: create deployment environment
-  shell: /bin/su - "{{ oracle_install_user }}" -c "{{ wlst_sh }} -loadProperties {{ environment_properties }} {{ create_deploy_domain_py }}"
+  become_user: "{{ oracle_install_user }}"
+  shell: "{{ wlst_sh }} -loadProperties {{ environment_properties }} {{ create_deploy_domain_py }}"
+  args:
     creates="{{ domain_configuration_home }}/config/deploy_config.txt"
     
 - name: create template
-  shell: /bin/su - "{{ oracle_install_user }}" -c "{{ pack_sh }} -managed=true -domain={{ domain_configuration_home }} -template={{ wls_template_file }} -template_name={{ domain_name }}"
+  become_user: "{{ oracle_install_user }}"
+  shell: "{{ pack_sh }} -managed=true -domain={{ domain_configuration_home }} -template={{ wls_template_file }} -template_name={{ domain_name }}"
+  args:
     creates="{{ wls_template_file }}"

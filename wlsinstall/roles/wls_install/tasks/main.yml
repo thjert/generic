@@ -67,7 +67,9 @@
   register: orainst_loc_created
     
 - name: install java virtual machine
-  shell: /bin/su - "{{ oracle_install_user }}" -c "/bin/tar xzf {{ jvm_installer }} -C {{ runtime_home }}"
+  become_user: "{{ oracle_install_user }}"
+  shell: "/bin/tar xzf {{ jvm_installer }} -C {{ runtime_home }}"
+  args:
     creates="{{ java }}"
   register: jvm_installed
   
