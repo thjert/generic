@@ -16,10 +16,10 @@ root_directory:            "/u01"
 software_directory:        "/mnt/hgfs/wls_temp"
     
 # Name of JVM file that is used in the installation
-jvm_file_name:             "jdk-8u31-linux-x64.tar.gz"
+jvm_file_name:             "jdk-8u161-linux-x64.tar.gz"
     
 # Name of the WebLogic file that is used in the installation
-weblogic_file_name:        "fmw_12.1.3.0.0_wls.jar"
+weblogic_file_name:        "fmw_12.2.1.2.0_wls.jar"
     
 # shared directory for the templates that is used by pack and unpack
 templates_directory:       "/mnt/hgfs/wls_temp"
@@ -38,7 +38,7 @@ base_directory:            "{{ root_directory }}/app/oracle"
 runtime_home:              "{{ base_directory }}/weblogic12.1.3"
  
 # Directory where the JVM will be installed
-java_home:                 "{{ runtime_home }}/jdk1.8.0_31"
+java_home:                 "{{ runtime_home }}/jdk1.8.0_161"
  
 # Directory that will be used as the middleware home (holds software binaries)
 middleware_home:           "{{ runtime_home }}/installation"
@@ -49,8 +49,8 @@ oracle_inventory_home:     "{{ base_directory }}/oraInventory"
 # User and Group under which the software needs to be installed
 oracle_install_user:       "weblogic"
 oracle_install_password:   "$6$y718uwhsay612wyq$jnQ8mm4TVWKnEr3NGFhFHh09rE4IyKsdyGTg3q0unKzeb7WvvqnoR6BflkmIEvOctoM0mQ7xXoCqd55dDoZf/0"
-oracle_install_group:      "javainstall"
-oracle_install_group_id:   "1000"
+oracle_install_group:      "oracle"
+oracle_install_group_id:   "1002"
  
 # Name of the domain
 domain_name:               "tryout_domain"
@@ -139,7 +139,9 @@ compiler_monitoring_args:          "-XX:+PrintCompilation -XX:+UnlockDiagnosticV
 
 ##### domain parameters #####
 cluster_name:                          "cluster"
-machine_listen_addresses:              "machine1.ms.com,machine2.ms.com"
+#machine_listen_addresses:              "machine1.ms.com,machine2.ms.com"
+# Thomas Hjert Bara en managed server
+machine_listen_addresses:              "machine1.ms.com"
 machine_user_id:                       "{{ oracle_install_user }}"
 machine_group_id:                      "{{ oracle_install_group }}"
 number_of_managed_servers_per_machine: "1"

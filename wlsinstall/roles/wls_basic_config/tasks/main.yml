@@ -9,12 +9,46 @@
     #mode=0644
     
 - name: create basic domain
-  shell: /bin/su - "{{ oracle_install_user }}" -c "{{ wlst_sh }} -loadProperties {{ environment_properties }} {{ create_basic_domain_py }}"
+  become_user: "{{ oracle_install_user }}"
+  shell: "{{ wlst_sh }} -loadProperties {{ environment_properties }} {{ create_basic_domain_py }}"
+  args:
     creates="{{ config_xml }}"
     
 - name: create application home directory
   file:
     path="{{ domain_application_home }}"
+    state=directory
+    owner="{{ oracle_install_user }}"
+    group="{{ oracle_install_group }}"
+    mode=0755
+
+- name: create nodemanager home directory
+  file:
+    path="{{ node_manager_home }}"
+    state=directory
+    owner="{{ oracle_install_user }}"
+    group="{{ oracle_install_group }}"
+    mode=0755
+    
+- name: create nodemanager bin directory
+  file:
+    path="{{ node_manager_home }}/bin"
+    state=directory
+    owner="{{ oracle_install_user }}"
+    group="{{ oracle_install_group }}"
+    mode=0755
+    
+- name: create domain configuruation home directory
+  file:
+    path="{{ domain_configuration_home }}"
+    state=directory
+    owner="{{ oracle_install_user }}"
+    group="{{ oracle_install_group }}"
+    mode=0755
+    
+- name: create domain configuruation bin directory
+  file:
+    path="{{ domain_configuration_home }}/bin"
     state=directory
     owner="{{ oracle_install_user }}"
     group="{{ oracle_install_group }}"
@@ -52,6 +86,8 @@
   register: nodemanager_started
     
 - name: start admin server
-  shell: /bin/su - "{{ oracle_install_user }}" -c "{{ admin_server_start_service }}"
+  become_user: "{{ oracle_install_user }}"
+  shell: "{{ admin_server_start_service }}"
+  args:
     creates="{{ admin_server_lock_file }}"
   when: nodemanager_started|success

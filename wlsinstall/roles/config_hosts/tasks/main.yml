@@ -3,14 +3,18 @@
 - name: disable selinux
   selinux:
     state=disabled
-    
-- name: disable iptables
+#
+# Thomas Hjert: iptables används ej
+#    
+- name: disable firewalld
   service:
-    name=iptables
+    name=firewalld
     state=stopped
     enabled=no
  
 - name: install packages
+  become_user: root
+  become_method: sudo
   yum:
     name={{ item }}
     state=present
@@ -29,9 +33,12 @@
     - libstdc++-devel
     - make
     - openmotif
-    - openmotif22
     - sysstat
-    
+##
+## Thomas Hjert Fanns inget sådant paket
+##    
+##    - openmotif22
+
 - name: create group
   group:
     name={{ oracle_install_group }}

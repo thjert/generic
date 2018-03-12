@@ -1,6 +1,6 @@
 # /etc/ansible/adminserver.yml
 - hosts: adminserver
-  user: root
+  become_user: root
   
   roles:
     - common

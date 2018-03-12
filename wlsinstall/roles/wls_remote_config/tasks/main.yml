@@ -12,6 +12,14 @@
     group="{{ oracle_install_group }}"
     mode=0755
     
+- name: create nodemanager home directory
+  file:
+    path="{{ node_manager_home }}"
+    state=directory
+    owner="{{ oracle_install_user }}"
+    group="{{ oracle_install_group }}"
+    mode=0755
+    
 - name: create nodemanager.properties
   template:
     src=roles/common/templates/weblogic/nodemanager_properties.j2 

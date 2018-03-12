@@ -61,9 +61,9 @@
   template:
     src=roles/common/templates/weblogic/ora_inst_loc.j2 
     dest="{{ ora_inst_loc }}"
-    #owner="{{ oracle_install_user }}"
-    #group="{{ oracle_install_group }}"
-    #mode=0644
+    owner="{{ oracle_install_user }}"
+    group="{{ oracle_install_group }}"
+    mode=0644
   register: orainst_loc_created
     
 - name: install java virtual machine
@@ -71,13 +71,13 @@
     creates="{{ java }}"
   register: jvm_installed
   
-#- name: debug registered values
-#  debug: 
-#    var={{ item }}
-#  with_items:
-#    - silent_install_file_created
-#    - orainst_loc_created
-#    - jvm_installed
+- name: debug registered values
+  debug: 
+    var={{ item }}
+  with_items:
+    - silent_install_file_created
+    - orainst_loc_created
+    - jvm_installed
   
 - name: set entropy gathering device
   replace:
@@ -86,7 +86,11 @@
     replace="securerandom.source={{ securerandom_source }}"
   when: jvm_installed|success
     
+###shell: /bin/su - "{{ oracle_install_user }}" -c "{{ java }} -Xms512m -Xmx512m -jar {{ weblogic_installer }} -silent -responseFile {{ silent_install_file }} -invPtrLoc {{ ora_inst_loc }}"
+
 - name: install weblogic server
-  shell: /bin/su - "{{ oracle_install_user }}" -c "{{ java }} -Xms512m -Xmx512m -jar {{ weblogic_installer }} -silent -responseFile {{ silent_install_file }} -invPtrLoc {{ ora_inst_loc }}"
-    creates="{{ wlst_sh }}"
+  become_user: "{{ oracle_install_user }}"
+  shell: "{{ java }} -Xms512m -Xmx512m -jar {{ weblogic_installer }} -silent -responseFile {{ silent_install_file }} -invPtrLoc {{ ora_inst_loc }}"
+  args:
+    creates: "{{ wlst_sh }}"
   when: jvm_installed|success and silent_install_file_created|success and orainst_loc_created|success
