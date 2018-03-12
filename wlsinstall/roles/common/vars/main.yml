@@ -110,7 +110,8 @@ create_deploy_domain_py:    "{{ temporary_directory }}/create_deployment_environ
  
 ##### executors #####
 java:                       "{{ java_home }}/bin/java"
-admin_server_start_service: "{{ scripts_directory }}/AdminServerStartService.sh"
+###admin_server_start_service: "{{ scripts_directory }}/AdminServerStartService.sh"
+admin_server_start_service: "{{ domain_configuration_home }}/startWebLogic.sh"
 pack_sh:                    "{{ weblogic_home }}/common/bin/pack.sh"
 unpack_sh:                  "{{ weblogic_home }}/common/bin/unpack.sh"
 wlst_sh:                    "{{ weblogic_home }}/common/bin/wlst.sh"

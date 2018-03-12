@@ -1,6 +1,6 @@
 # /etc/ansible/managedservers/yml
 - hosts: managedservers
-  user: root
+  become_user: root
   
   roles:
     - common

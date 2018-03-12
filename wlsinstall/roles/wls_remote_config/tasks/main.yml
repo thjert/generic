@@ -5,7 +5,23 @@
   shell: "{{ unpack_sh }} -domain={{ domain_configuration_home }} -app_dir={{ domain_application_home }} -nodemanager_type={{ node_manager_type }} -nodemanager_home={{ node_manager_home }} -template={{ wls_template_file }}"
   args:
     creates="{{ set_domain_env_sh }}"
- 
+
+- name: create temporary software directory
+  file:
+    path="{{ software_directory }}"
+    state=directory
+    owner="{{ oracle_install_user }}"
+    group="{{ oracle_install_group }}"
+    mode=0755
+
+- name: create temporary template directory
+  file:
+    path="{{ template_directory }}"
+    state=directory
+    owner="{{ oracle_install_user }}"
+    group="{{ oracle_install_group }}"
+    mode=0755
+
 - name: create application home directory
   file:
     path="{{ domain_application_home }}"

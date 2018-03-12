@@ -87,7 +87,7 @@
     
 - name: start admin server
   become_user: "{{ oracle_install_user }}"
-  shell: "{{ admin_server_start_service }}"
+  shell: "nohup {{ admin_server_start_service }}"
   args:
     creates="{{ admin_server_lock_file }}"
   when: nodemanager_started|success
