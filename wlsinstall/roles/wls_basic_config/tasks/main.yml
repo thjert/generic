@@ -87,7 +87,18 @@
     
 - name: start admin server
   become_user: "{{ oracle_install_user }}"
-  shell: "nohup {{ admin_server_start_service }}"
+  shell: "nohup {{ admin_server_start_service }} &"
   args:
     creates="{{ admin_server_lock_file }}"
   when: nodemanager_started|success
+
+
+## Verfiera att server är uppe och lyssnar på portar
+
+
+- name: Waiting for host to respond...
+  local_action: >
+    wait_for host=192.168.56.14
+    port=7001
+    delay=180
+    timeout=180
