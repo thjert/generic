@@ -6,22 +6,6 @@
   args:
     creates="{{ set_domain_env_sh }}"
 
-- name: create temporary software directory
-  file:
-    path="{{ software_directory }}"
-    state=directory
-    owner="{{ oracle_install_user }}"
-    group="{{ oracle_install_group }}"
-    mode=0755
-
-- name: create temporary template directory
-  file:
-    path="{{ template_directory }}"
-    state=directory
-    owner="{{ oracle_install_user }}"
-    group="{{ oracle_install_group }}"
-    mode=0755
-
 - name: create application home directory
   file:
     path="{{ domain_application_home }}"
