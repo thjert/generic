@@ -112,8 +112,13 @@ create_deploy_domain_py:    "{{ temporary_directory }}/create_deployment_environ
 java:                       "{{ java_home }}/bin/java"
 ###admin_server_start_service: "{{ scripts_directory }}/AdminServerStartService.sh"
 admin_server_start_service: "{{ domain_configuration_home }}/startWebLogic.sh"
-pack_sh:                    "{{ weblogic_home }}/common/bin/pack.sh"
-unpack_sh:                  "{{ weblogic_home }}/common/bin/unpack.sh"
+## Thomas Hjert: Felaktig path enligt felmeddelande ...
+##pack_sh:                    "{{ weblogic_home }}/common/bin/pack.sh"
+pack_sh:                    "{{ runtime_home }}/installation/oracle_common/common/bin/pack.sh"
+## Thomas Hjert: Felmeddelande säger att pack.sh skall användas isf unpack.sh
+##unpack_sh:                  "{{ weblogic_home }}/common/bin/unpack.sh"
+##unpack_sh:                  "{{ weblogic_home }}/common/bin/pack.sh"
+unpack_sh:                    "{{ runtime_home }}/installation/oracle_common/common/bin/pack.sh"
 wlst_sh:                    "{{ weblogic_home }}/common/bin/wlst.sh"
 
 
@@ -139,8 +144,6 @@ monitoring_args:                   "-XX:+UnlockCommercialFeatures -XX:+FlightRec
 coherence_monitoring_args:         "-Dtangosol.coherence.management=all -Dtangosol.coherence.management.remote=true"
 garbage_collector_monitoring_args: "-verbosegc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:/tmp/${SERVER_NAME}.out -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=10 -XX:GCLogFileSize=5000K"
 compiler_monitoring_args:          "-XX:+PrintCompilation -XX:+UnlockDiagnosticVMOptions -XX:+PrintInlining"
-##### managed server parameters #####
-managed_server_server_name_prefix:	"thjtest"
 ##### domain parameters #####
 cluster_name:                          "cluster"
 #machine_listen_addresses:              "machine1.ms.com,machine2.ms.com"

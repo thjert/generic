@@ -66,3 +66,36 @@
     owner=root
     group=root
     mode=0644
+
+- name: create temporary software directory
+  file:
+    path="{{ software_directory }}"
+    state=directory
+    owner="{{ oracle_install_user }}"
+    group="{{ oracle_install_group }}"
+    mode=0755
+    recurse=yes
+
+- name: create temporary templates directory
+  file:
+    path="{{ templates_directory }}"
+    state=directory
+    owner="{{ oracle_install_user }}"
+    group="{{ oracle_install_group }}"
+    mode=0755
+    recurse=yes
+
+
+- copy:
+    src: "{{ software_directory }}/{{ weblogic_file_name }}"
+    dest: "{{ software_directory }}/{{ weblogic_file_name }}"
+    owner: root
+    group: root
+    mode: 0644
+
+- copy:
+    src: "{{ software_directory }}/{{ jvm_file_name }}"
+    dest: "{{ software_directory }}/{{ jvm_file_name }}"
+    owner: root
+    group: root
+    mode: 0644

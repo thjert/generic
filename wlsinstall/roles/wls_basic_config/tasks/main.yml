@@ -38,7 +38,7 @@
     group="{{ oracle_install_group }}"
     mode=0755
     
-- name: create domain configuruation home directory
+- name: create domain configuration home directory
   file:
     path="{{ domain_configuration_home }}"
     state=directory
@@ -79,6 +79,7 @@
     mode=0744
     
 - name: enable and start nodemanager service
+  become_user: root
   service:
     name=nodemanager
     state=started
@@ -93,12 +94,11 @@
   when: nodemanager_started|success
 
 
-## Verfiera att server är uppe och lyssnar på portar
+## Verfiera att admin server är uppe och lyssnar på portar
 
 
-- name: Waiting for host to respond...
-  local_action: >
-    wait_for host=192.168.56.14
-    port=7001
-    delay=180
-    timeout=180
+- name: waiting for admin server to respond...
+  wait_for:
+    port: "{{ admin_server_listen_port }}"
+    delay: 30
+    timeout: 180
