@@ -46,7 +46,7 @@
     group="{{ oracle_install_group }}"
     mode=0755
     
-- name: create domain configuruation bin directory
+- name: create domain configuration bin directory
   file:
     path="{{ domain_configuration_home }}/bin"
     state=directory

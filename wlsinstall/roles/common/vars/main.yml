@@ -79,7 +79,8 @@ scripts_directory:         "{{ runtime_home }}/scripts"
 ##### environment.properties #####
 node_manager_username:       "nodemanager"
 node_manager_password:       "snippets12c"
-node_manager_listen_address:    "wls12c-r2-1"
+###node_manager_listen_address:    "wls12c-r2-1"
+node_manager_listen_address:    "weblogic"
 node_manager_listen_port:    "5556"
 node_manager_mode:           "plain"
 admin_server_name:           "AdminServer"
@@ -118,7 +119,8 @@ pack_sh:                    "{{ runtime_home }}/installation/oracle_common/commo
 ## Thomas Hjert: Felmeddelande säger att pack.sh skall användas isf unpack.sh
 ##unpack_sh:                  "{{ weblogic_home }}/common/bin/unpack.sh"
 ##unpack_sh:                  "{{ weblogic_home }}/common/bin/pack.sh"
-unpack_sh:                    "{{ runtime_home }}/installation/oracle_common/common/bin/pack.sh"
+##unpack_sh:                    "{{ runtime_home }}/installation/oracle_common/common/bin/pack.sh"
+unpack_sh:                    "{{ runtime_home }}/installation/oracle_common/common/bin/unpack.sh"
 wlst_sh:                    "{{ weblogic_home }}/common/bin/wlst.sh"
 
 
@@ -148,7 +150,8 @@ compiler_monitoring_args:          "-XX:+PrintCompilation -XX:+UnlockDiagnosticV
 cluster_name:                          "cluster"
 #machine_listen_addresses:              "machine1.ms.com,machine2.ms.com"
 # Thomas Hjert Bara en managed server
-machine_listen_addresses:              "machine1.ms.com"
+###machine_listen_addresses:              "machine1.ms.com"
+machine_listen_addresses:              "weblogicms"
 machine_user_id:                       "{{ oracle_install_user }}"
 machine_group_id:                      "{{ oracle_install_group }}"
 number_of_managed_servers_per_machine: "1"

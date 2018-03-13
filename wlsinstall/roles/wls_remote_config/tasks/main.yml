@@ -2,9 +2,20 @@
  
 - name: create domain
   become_user: "{{ oracle_install_user }}"
-  shell: "{{ unpack_sh }} -domain={{ domain_configuration_home }} -app_dir={{ domain_application_home }} -nodemanager_type={{ node_manager_type }} -nodemanager_home={{ node_manager_home }} -template={{ wls_template_file }}"
+  shell: "{{ unpack_sh }} -domain={{ domain_configuration_home }} -template={{ wls_template_file }} -template_name=MS_Template }}"
   args:
     creates="{{ set_domain_env_sh }}"
+
+###  shell: "{{ unpack_sh }} -domain={{ domain_configuration_home }} -template={{ runtime_home }}/installation/wlserver/common/templates/wls/tryout_domain_ms_wls.jar -template_name=MS_Template }}"
+
+- name: create domain configuration home directory
+  file:
+    path="{{ domain_configuration_home }}"
+    state=directory
+    owner="{{ oracle_install_user }}"
+    group="{{ oracle_install_group }}"
+    mode=0755
+    recurse=yes
 
 - name: create application home directory
   file:

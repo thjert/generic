@@ -4,9 +4,9 @@
   template:
     src=roles/common/templates/weblogic/create_deployment_environment_py.j2 
     dest="{{ create_deploy_domain_py }}"
-    #owner="{{ oracle_install_user }}"
-    #group="{{ oracle_install_group }}"
-    #mode=0644
+    owner="{{ oracle_install_user }}"
+    group="{{ oracle_install_group }}"
+    mode=0644
     
 - name: create deployment environment
   become_user: "{{ oracle_install_user }}"
@@ -19,3 +19,4 @@
   shell: "{{ pack_sh }} -managed=true -domain={{ domain_configuration_home }} -template={{ wls_template_file }} -template_name={{ domain_name }}"
   args:
     creates="{{ wls_template_file }}"
+###  shell: "{{ pack_sh }} -managed=true -domain={{ domain_configuration_home }} -template=/u01/app/oracle/weblogic12.1.3/installation/wlserver/common/templates/wls/wls.jar -template_name={{ domain_name }}"
