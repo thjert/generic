@@ -35,10 +35,15 @@
     - openmotif
     - sysstat
     - net-tools
+    - ntpdate
+    - ntp
 ##
 ## Thomas Hjert Fanns inget sådant paket
 ##    
 ##    - openmotif22
+
+- name: Make sure ntpdate service is running
+  systemd: state=started name=ntpdate
 
 - name: create group
   group:

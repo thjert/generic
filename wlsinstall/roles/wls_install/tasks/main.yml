@@ -1,12 +1,12 @@
 # /etc/ansible/roles/wls_install/tasks/main.yml
  
-- name: create root directory
-  file:
-    path={{ root_directory }}
-    state=directory
-    owner="{{ oracle_install_user }}"
-    group="{{ oracle_install_group }}"
-    mode=0755
+###- name: create root directory
+###  file:
+###    path={{ root_directory }}
+###    state=directory
+###    owner="{{ oracle_install_user }}"
+###    group="{{ oracle_install_group }}"
+###    mode=0755
 
 - name: create domain configuration home directory
   file:

@@ -121,7 +121,8 @@ pack_sh:                    "{{ runtime_home }}/installation/oracle_common/commo
 ##unpack_sh:                  "{{ weblogic_home }}/common/bin/pack.sh"
 ##unpack_sh:                    "{{ runtime_home }}/installation/oracle_common/common/bin/pack.sh"
 unpack_sh:                    "{{ runtime_home }}/installation/oracle_common/common/bin/unpack.sh"
-wlst_sh:                    "{{ weblogic_home }}/common/bin/wlst.sh"
+#wlst_sh:                    "{{ weblogic_home }}/common/bin/wlst.sh"
+wlst_sh:                    "{{ runtime_home }}/installation/oracle_common/common/bin/wlst.sh"
 
 
 ##### JVM parameters #####

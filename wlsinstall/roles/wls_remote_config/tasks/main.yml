@@ -1,12 +1,13 @@
 # /etc/ansible/roles/wls_remote_config/tasks/main.yml
  
-- name: create domain
-  become_user: "{{ oracle_install_user }}"
-  shell: "{{ unpack_sh }} -domain={{ domain_configuration_home }} -template={{ wls_template_file }} -template_name=MS_Template }}"
-  args:
-    creates="{{ set_domain_env_sh }}"
+- name: copy jar-file
+  copy:
+   src: /tmp/weblogic/mnt/hgfs/wls_temp/tryout_domain.jar
+   dest: /mnt/hgfs/wls_temp/tryout_domain.jar
+   owner: "{{ oracle_install_user }}"
+   group: "{{ oracle_install_group }}"
+   mode: 0644
 
-###  shell: "{{ unpack_sh }} -domain={{ domain_configuration_home }} -template={{ runtime_home }}/installation/wlserver/common/templates/wls/tryout_domain_ms_wls.jar -template_name=MS_Template }}"
 
 - name: create domain configuration home directory
   file:
@@ -16,6 +17,14 @@
     group="{{ oracle_install_group }}"
     mode=0755
     recurse=yes
+
+- name: create domain
+  become_user: "{{ oracle_install_user }}"
+  shell: "{{ unpack_sh }} -domain={{ domain_configuration_home }} -template={{ wls_template_file }}"
+  args:
+    creates="{{ set_domain_env_sh }}"
+
+###  shell: "{{ unpack_sh }} -domain={{ domain_configuration_home }} -template={{ runtime_home }}/installation/wlserver/common/templates/wls/tryout_domain_ms_wls.jar -template_name=MS_Template }}"
 
 - name: create application home directory
   file:
