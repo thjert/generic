@@ -7,6 +7,7 @@
     # User defined variables for infrastructure
     - infra-vars.yml
     - wls-vars.yml
+    - secrets.yml
     - deployment-vars.yml
   roles:
     - common
