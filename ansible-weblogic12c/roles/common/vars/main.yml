@@ -1,0 +1,6 @@
+---
+# roles/common/vars/main.yml
+##### deploy actions #####
+deploy_targets:                        "{{ cluster_name }}"
+# deploy_action is either deploy or undeploy
+deploy_action:                         "undeploy"

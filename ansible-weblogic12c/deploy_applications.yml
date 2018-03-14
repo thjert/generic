@@ -1,0 +1,6 @@
+- hosts: adminserver
+  user: root
+  
+  roles:
+    - common
+    - wls_deploy_applications 
