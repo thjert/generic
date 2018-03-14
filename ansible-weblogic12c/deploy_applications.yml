@@ -1,6 +1,13 @@
-- hosts: adminserver
-  user: root
-  
+---
+- name: Define variables and deploy applications
+  hosts: weblogic
+###  become_user: "{{ oracle_user }}"
+  become_user: root
+  vars_files:
+    # User defined variables for infrastructure
+    - infra-vars.yml
+    - wls-vars.yml
+    - deployment-vars.yml
   roles:
     - common
     - wls_deploy_applications 
