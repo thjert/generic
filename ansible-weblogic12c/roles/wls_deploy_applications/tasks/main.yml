@@ -28,8 +28,8 @@
     - deploy_environment_py_created
     - deployment_artifacts_copied
  
-###- name: (un)deploy applications
-###  shell: /bin/su - "{{ oracle_install_user }}" -c "{{ wlst_sh }} -loadProperties {{ environment_properties }} {{ deploy_environment_py }}"
-###  when: deploy_environment_py_created.changed or deployment_artifacts_copied.changed
+- name: (un)deploy applications
+  sudo: true
+  shell: "id; {{ wlst_sh }} -loadProperties {{ environment_properties }} {{ deploy_environment_py }}"
+  when: deploy_environment_py_created.changed or deployment_artifacts_copied.changed
 
-# ../roles/wls_deploy_applications/tasks/main.yml
