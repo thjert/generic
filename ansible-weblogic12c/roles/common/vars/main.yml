@@ -4,4 +4,4 @@
 #deploy_targets:                        "{{ cluster_name }}"
 deploy_targets:                        "{{ domain_name }}"
 # deploy_action is either deploy or undeploy
-deploy_action:                         "undeploy"
+deploy_action:                         "deploy"

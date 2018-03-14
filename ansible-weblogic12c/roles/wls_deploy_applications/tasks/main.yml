@@ -11,6 +11,10 @@
     group: "{{ oracle_group }}"
     mode: 0644
   register: deploy_environment_py_created
+
+- name: create directory for applications
+  sudo: true
+  file: path="{{ domain_application_home }}" state=directory owner={{ oracle_user }} group={{ oracle_group }} recurse=yes
  
 - name: copy deployment artifacts
   sudo: true

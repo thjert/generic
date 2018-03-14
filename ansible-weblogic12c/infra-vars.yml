@@ -20,6 +20,6 @@ node_manager_listen_address: 'localhost'
 admin_server_hostname: 'localhost'
 admin_server_port: '7001'
 managed_server_name: 'managed_1'
-managed_server_port: '7003'
+managed_server_port: '8001'
 #
 software_directory:        "/mnt/hgfs/wls_temp"

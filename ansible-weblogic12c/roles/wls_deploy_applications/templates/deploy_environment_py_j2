@@ -33,21 +33,34 @@ def connect_to_admin_server():
  
 def determine_application_names():
     application_names = [];
-    
     deployed_application_names = [];    
     app_deployments = cmo.getAppDeployments()
     for app_deployment in app_deployments:
         deployed_application_names.append(app_deployment.getName());
-        
     if what_to_do == 'undeploy':
         return deployed_application_names;
-    
+#
+# Variabeln directory_entry_names
+#    
     directory_entry_names = os.listdir(domain_application_home);
+    print directory_entry_names;
     for directory_entry_name in directory_entry_names:
-        if not os.path.isfile(os.path.join(domain_application_home, directory_entry_name)):
+        print "directory_entry_name " + directory_entry_name;
+        print "domain_application_home " + domain_application_home;
+        print "directory_entry_name " + directory_entry_name;
+        full_path_of_app = os.path.join(domain_application_home, directory_entry_name);
+        print "directory and file " + full_path_of_app
+        if not os.path.isfile(full_path_of_app):
+            print "domain_application_home " + domain_application_home;
+        else:
+            print "full_path_of_app " + full_path_of_app;
             if directory_entry_name not in deployed_application_names:
+                print "application_names "
+                print  application_names;
+                print "directory_entry_name "
+                print  directory_entry_name;
                 application_names.append(directory_entry_name);
-    
+                print "application_names " + application_names;
     return application_names;
  
 def deploy_applications(application_names): 
@@ -55,7 +68,11 @@ def deploy_applications(application_names):
         application_path = os.path.join(domain_application_home, application_name);
         deployment_plan = application_path + '/plan/Plan.xml';
         deployment_artifact_path = application_path + '/app';
-        deployment_artifact = deployment_artifact_path + '/' + os.listdir(deployment_artifact_path)[0];
+        deployment_artifact_path = application_path
+        if os.path.exists(deployment_artifact_path):
+            ###deployment_artifact = deployment_artifact_path + '/' + os.listdir(deployment_artifact_path)[0];
+            ###deployment_artifact = deployment_artifact_path + '/' + deployment_artifact_path;
+            deployment_artifact = deployment_artifact_path
         if os.path.isfile(deployment_plan):
             print 'DEPLOYING APPLICATION ' + application_name + ' WITH DEPLOYMENT PLAN';
             deploy(appName=application_name, path=deployment_artifact, targets=target_names, planPath=deployment_plan);
