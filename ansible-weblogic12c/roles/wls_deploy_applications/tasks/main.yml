@@ -32,6 +32,11 @@
     - deploy_environment_py_created
     - deployment_artifacts_copied
  
+- name: Check if conditions to deploy are met or not.
+  debug:
+    msg: "Conditions to deploy are not met, either remove {{ deploy_environment_py }} or clean the directory {{ domain_application_home }} in the host"
+  when: not deploy_environment_py_created.changed and not deployment_artifacts_copied.changed
+
 - name: (un)deploy applications
   sudo: true
   shell: "id; {{ wlst_sh }} -loadProperties {{ environment_properties }} {{ deploy_environment_py }}"
