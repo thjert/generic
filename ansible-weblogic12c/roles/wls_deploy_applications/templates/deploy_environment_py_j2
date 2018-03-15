@@ -17,11 +17,11 @@ admin_server_listen_address='{{ admin_server_hostname }}'
 admin_server_listen_port='{{ admin_server_port }}'
 admin_username='{{ weblogic_admin }}'
 admin_password='{{ nodemanager_password }}'
- 
+
 admin_server_url = 't3://' + admin_server_listen_address + ':' + admin_server_listen_port;
 admin_server_config_file = domain_configuration_home + '/admin_server_config_file.properties';
 admin_server_key_file = domain_configuration_home + '/admin_server_key_file.properties';
- 
+
 def connect_to_admin_server():
     print 'CONNECT TO ADMIN SERVER';
     if os.path.isfile(admin_server_config_file) and os.path.isfile(admin_server_key_file):
@@ -30,7 +30,7 @@ def connect_to_admin_server():
     else:
         print '-USING USERNAME AND PASSWORD';
         connect(admin_username, admin_password, admin_server_url);
- 
+
 def determine_application_names():
     application_names = [];
     deployed_application_names = [];    
@@ -60,11 +60,11 @@ def determine_application_names():
                 print "directory_entry_name "
                 print  directory_entry_name;
                 application_names.append(directory_entry_name);
-                print "application_names " + application_names;
+                print application_names;
     return application_names;
- 
-def deploy_applications(application_names): 
-    for application_name in application_names:            
+
+def deploy_applications(application_names):
+    for application_name in application_names:
         application_path = os.path.join(domain_application_home, application_name);
         deployment_plan = application_path + '/plan/Plan.xml';
         deployment_artifact_path = application_path + '/app';
@@ -79,33 +79,33 @@ def deploy_applications(application_names):
         else:
             print 'DEPLOYING APPLICATION ' + application_name + ' WITHOUT DEPLOYMENT PLAN';
             deploy(appName=application_name, path=deployment_artifact, targets=target_names);
-                    
+
 def undeploy_applications(application_names):
     for application_name in application_names:
         print 'UNDEPLOYING APPLICATION ' + application_name;
         undeploy(appName=application_name);
- 
+
 def start_edit_mode():
     print 'START EDIT MODE';
     edit();
     startEdit();
- 
+
 def save_and_active_changes():
     print 'SAVE AND ACTIVATE CHANGES';
     save();
     activate(block='true');
-    
+
 connect_to_admin_server();
- 
+
 start_edit_mode();
- 
+
 application_names = determine_application_names();
- 
+
 if what_to_do == 'deploy' and application_names:
     deploy_applications(application_names);
 elif what_to_do == 'undeploy' and application_names:
     undeploy_applications(application_names);
 else:
     print 'NOTHING TO DO';
-    
+
 save_and_active_changes();

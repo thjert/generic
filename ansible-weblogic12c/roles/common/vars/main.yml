@@ -1,7 +1,7 @@
 ---
 # roles/common/vars/main.yml
 ##### deploy actions #####
-#deploy_targets:                        "{{ cluster_name }}"
-deploy_targets:                        "{{ domain_name }}"
+#deploy_targets:                        "{{ cluster_name }}" Detta är nog det som är att föredra om man har installerat ett cluster.
+deploy_targets:                        "{{admin_server_name}},{{managed_server_name}}"
 # deploy_action is either deploy or undeploy
 deploy_action:                         "deploy"
