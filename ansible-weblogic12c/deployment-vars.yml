@@ -2,6 +2,8 @@
 deploy_environment_py: /oracle/fmw12.2.1/config/Domains/custom_domain/bin/deploy_environment.py
 #domain_application_home: /oracle/fmw12.2.1/config/Domains/custom_domain/autodeploy
 domain_application_home: /oracle/fmw12.2.1/config/Domains/custom_domain/apps
+# Must be defined in wls-vars.yml
+###domain_extension_home: /oracle/fmw12.2.1/config/Domains/custom_domain/lib # Must be defined in wls-vars.yml
 domain_configuration_home: /oracle/fmw12.2.1/config/Domains/custom_domain/config
 fusion_middleware_home: "{{ middleware_home }}"
 java_home: "{{ jdk_folder }}"

@@ -1,3 +1,3 @@
 #! /bin/bash
 
-ansible-playbook -v deploy_applications.yml --extra-vars "deploy_action=deploy"
+ansible-playbook -v wls-deploy-applications.yml --extra-vars "deploy_action=deploy"

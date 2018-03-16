@@ -1,8 +1,9 @@
 ---
 - name: Define variables and deploy applications
   hosts: weblogic
+  sudo: True
 ###  become_user: "{{ oracle_user }}"
-  become_user: root
+###  become_user: root
   vars_files:
     # User defined variables for infrastructure
     - infra-vars.yml
@@ -11,4 +12,4 @@
     - deployment-vars.yml
   roles:
     - common
-    - wls_stop_nodemanager
+    - wls-start-nodemanager

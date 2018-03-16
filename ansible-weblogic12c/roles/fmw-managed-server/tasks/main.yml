@@ -1,3 +1,16 @@
+# ==> Copy library extensions 
+- name: copy library extensions
+  sudo: true
+  copy:
+    src="roles/common/files/weblogic/lib/"
+    dest="/oracle/fmw12.2.1/config/Domains/custom_domain/lib"
+    owner="{{ oracle_user }}"
+    group="{{ oracle_group }}"
+  register: extension_lib_copied
+
+###    dest="{{ domain_application_home }}"
+###    dest="{{ domain_application_home }}"
+ 
 # ==> Create managed server on Domain
 - name: Copy create managed server script
   template: src=create-managed.py dest={{ mw_installer_folder }}

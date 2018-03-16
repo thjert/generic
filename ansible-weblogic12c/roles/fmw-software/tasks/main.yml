@@ -6,7 +6,7 @@
     owner: "{{ oracle_user }}"
     group: "{{ oracle_group }}"
 
-- name: Copy Weblogic installation distributive on remote
+- name: Copy Weblogic installation distribution to remote
   synchronize:
     src: "{{software_directory }}/{{ mw_installer }}"
     dest: "{{ mw_installer_folder }}"

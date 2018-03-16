@@ -1,6 +1,7 @@
 - name: Start Node Manager
-  become_user: root
-  become_method: sudo
+  ###become_user: root
+  ###become_method: sudo
+  sudo: True
   command: 'systemctl start nodemanager'
   tags:
     - start-nodemanager
