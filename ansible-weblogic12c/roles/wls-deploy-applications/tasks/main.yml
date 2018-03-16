@@ -37,16 +37,9 @@
     msg: "Conditions to deploy are not met, either remove {{ deploy_environment_py }} or clean the directory {{ domain_application_home }} in the host"
   when: not deploy_environment_py_created.changed and not deployment_artifacts_copied.changed
 
-
-- name: debug value of variables
-  debug:
-    var=hostvars[inventory_hostname]
-
-- name: debug value of variables
+- name: debug value of deploy_action-variable
   debug: 
-    var={{ item }}
-  with_items:
-    - what_to_do
+    msg: "Value of deploy_action is {{ deploy_action }}"
  
 - name: (un)deploy applications
   sudo: true

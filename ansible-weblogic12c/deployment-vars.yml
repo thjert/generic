@@ -1,0 +1,12 @@
+---
+deploy_environment_py: /oracle/fmw12.2.1/config/Domains/custom_domain/bin/deploy_environment.py
+#domain_application_home: /oracle/fmw12.2.1/config/Domains/custom_domain/autodeploy
+domain_application_home: /oracle/fmw12.2.1/config/Domains/custom_domain/apps
+domain_configuration_home: /oracle/fmw12.2.1/config/Domains/custom_domain/config
+fusion_middleware_home: "{{ middleware_home }}"
+java_home: "{{ jdk_folder }}"
+wlst_sh: "{{ fusion_middleware_home }}/oracle_common/common/bin/wlst.sh"
+###environment_properties: '-Xms=2048m -Xmx=2048m -XX:NewSize=512M -XX:MaxNewSize=512M -XX:PermSize=256M -XX:MaxPermSize=256M'
+environment_properties: "/oracle/fmw12.2.1/config/Domains/custom_domain/servers/AdminServer/security/boot.properties"
+admin_server_listen_port: "{{ admin_server_port }}"
+admin_server_listen_address: "{{ admin_server_hostname }}"

@@ -11,4 +11,4 @@
     - deployment-vars.yml
   roles:
     - common
-    - wls_deploy_applications 
+    - wls_stop_nodemanager
