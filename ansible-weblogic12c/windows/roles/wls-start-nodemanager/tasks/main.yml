@@ -1,0 +1,10 @@
+- name: Start Node Manager
+  ###become_user: root
+  ###become_method: sudo
+  sudo: True
+  command: 'systemctl start nodemanager'
+  tags:
+    - start-nodemanager
+
+- name: Waiting for nodemanager to come up
+  wait_for: port=5556 delay=5 timeout=90
