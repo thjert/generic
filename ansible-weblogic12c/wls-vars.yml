@@ -12,4 +12,5 @@ weblogic_admin: 'weblogic'
 admin_server_name: 'AdminServer'
 server_hostname: '{{ ansible_fqdn }}'
 # Required for extension library
-domain_extension_home: /oracle/fmw12.2.1/config/Domains/custom_domain/lib
+#domain_extension_home: /oracle/fmw12.2.1/config/Domains/custom_domain/lib
+domain_extension_home: /oracle/fmw12.2.1/product/Oracle_Home/wlserver/common/deployable-libraries
