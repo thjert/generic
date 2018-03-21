@@ -1,3 +1,4 @@
+---
 # ==> Extra configuration added by Thomas Hjert
 
 # ==> Configure Windows
@@ -18,8 +19,22 @@
 # ==> Create user and groups
 - name: Create groups
   win_group: name={{ oracle_group }} state=present
+  ignore_errors: True
+
 - name: Create user
   win_user: name={{ oracle_user }} groups={{ oracle_group }} password={{ oracle_os_user_pass }}
+  ignore_errors: True
+
+###- name: Ensure groupmembership
+###- win_group_membership: name={{ oracle_group }} members={{ oracle_user }} state=present
+
+###- name: Add a local and domain user to a local group
+###  win_group_membership:
+###    name: Remote Desktop Users
+###    members:
+###      - NewLocalAdmin
+###      - DOMAIN\TestUser
+###    state: present
   
 # ==> Add open file and process limits for oracle user
 ###- name: Create a shell profile with file and process limits for oracle user

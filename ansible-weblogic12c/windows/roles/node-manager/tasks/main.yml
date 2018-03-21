@@ -24,6 +24,7 @@
 #####  wait_for: port={{ node_manager_listen_port }} delay=5 timeout=90
 #####  tags:
 #####    - start-nodemanager
-
-- name: Start nodemanager
-  win_shell: "{{ oracle_base }}/server/bin/startNodeManager.cmd {{ node_manager_listen_address }} {{ node_manager_listen_port }} > {{ oracle_base }}/product/Oracle_Home/logs/startNodeManager.log"
+##### Nedanstående fungerar att start med men Ansible hänger ...
+#####
+#####- name: Start nodemanager
+#####  win_shell: "{{ oracle_base }}/server/bin/startNodeManager.cmd {{ node_manager_listen_address }} {{ node_manager_listen_port }} > {{ oracle_base }}/product/Oracle_Home/logs/startNodeManager.log"

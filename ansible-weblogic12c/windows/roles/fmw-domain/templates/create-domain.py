@@ -40,8 +40,16 @@ cmo.setNodeManagerUsername('{{ nodemanager_username }}');
 cmo.setNodeManagerPasswordEncrypted('{{ nodemanager_password }}');
 
 cd('/Server/' + '{{ admin_server_name }}');
-create('{{ admin_server_name }}','SSL');
+set ('ListenPort', {{ admin_server_port }});
+
+try:
+  create('{{ admin_server_name }}','SSL');
+except ValueError:
+  print "SSL already exist, skipping ..."
+
 cd('SSL/' + '{{ admin_server_name }}');
+set ('Enabled', 'True');
+set ('ListenPort', {{ admin_server_port_ssl }});
 cmo.setHostnameVerificationIgnored(true);
 cmo.setHostnameVerifier(None);
 cmo.setTwoWaySSLEnabled(false);

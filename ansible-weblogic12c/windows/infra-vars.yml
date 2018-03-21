@@ -1,6 +1,7 @@
 # Oracle os user and group
 oracle_user: 'oracle'
-oracle_group: 'oinstall'
+#oracle_group: 'oinstall'
+oracle_group: 'administrator'
 # Software and configuration main directory
 oracle_base: 'c:/oracle/wls10.3.6'
 
@@ -22,6 +23,7 @@ node_manager_listen_address: '192.168.108.110'
 #admin_server_hostname: 'localhost'
 admin_server_hostname: 'NORR-THOHJE'
 admin_server_port: '17001'
+admin_server_port_ssl: '17002'
 managed_server_name: 'managed_1'
 managed_server_port: '18001'
 #
