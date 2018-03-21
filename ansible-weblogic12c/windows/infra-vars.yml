@@ -2,24 +2,29 @@
 oracle_user: 'oracle'
 oracle_group: 'oinstall'
 # Software and configuration main directory
-oracle_base: 'c:\oracle\fmw12.2.1'
+oracle_base: 'c:/oracle/wls10.3.6'
 
 # JDK installer and target folder
-jdk_installation_archive: 'jdk-8u161-linux-x64.tar.gz'
-jdk_folder: '{{ oracle_base }}\jdk1.8.0_161'
+jdk_installation_archive: 'jdk-7u80-windows-x64.exe'
+#jdk_folder: '{{ oracle_base }}/jdk1.7.0_80'
+jdk_folder: 'c:\oracle\wls10.3.6\jdk1.7.0_80'
 
 # fmw installer
-mw_installer: 'fmw_12.2.1.2.0_wls.jar'
+mw_installer: 'wls1036_win32.exe'
 
 # Domain Name
 domain_name: 'custom_domain'
 
 # Nodemanager and server settings
-node_manager_listen_port: '5556'
-node_manager_listen_address: 'localhost'
-admin_server_hostname: 'localhost'
-admin_server_port: '7001'
+node_manager_listen_port: '15556'
+#node_manager_listen_address: 'localhost'
+node_manager_listen_address: '192.168.108.110'
+#admin_server_hostname: 'localhost'
+admin_server_hostname: 'NORR-THOHJE'
+admin_server_port: '17001'
 managed_server_name: 'managed_1'
-managed_server_port: '8001'
+managed_server_port: '18001'
 #
-software_directory:        'c:\mnt\hgfs\wls_temp'
+# Software directory in ACS (Ansible Control Server)
+#software_directory:        'c:/mnt/hgfs/wls_temp'
+software_directory:        '/mnt/hgfs/wls_temp'

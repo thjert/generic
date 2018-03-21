@@ -4,6 +4,6 @@
     - stop-nodemanager
 
 ###- name: Waiting for nodemanager to come up
-###  wait_for: port=5556 delay=5 timeout=90
+###  wait_for: port={{ node_manager_listen_port }} delay=5 timeout=90
 ###  tags:
 ###    - stop-nodemanager

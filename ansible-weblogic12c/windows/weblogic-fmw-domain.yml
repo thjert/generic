@@ -1,7 +1,7 @@
 ---
-- name: Configure Oracle Linux 7.1 with WebLogic 12c R2 domain
+- name: Configure Windows 10  with WebLogic 10.3.6 domain
   hosts: weblogic_win
-  sudo: True
+  ###  sudo: True
   vars_files:
     # User defined variables for infrastructure
     - infra-vars.yml
@@ -10,13 +10,11 @@
     # Infrastructure passwords
     - secrets.yml
   roles:
-    - role: linux-wls
-    - role: linux-jdk
-    - role: fmw-software
-      sudo_user: '{{ oracle_user }}'
+#####    - role: windows-wls
+#####    - role: windows-jdk
+#####    - role: fmw-software
 #####    - role: fmw-domain
-#####      sudo_user: '{{ oracle_user }}'
-#####    - role: node-manager
+    - role: node-manager
 #####    - role: start-admin-server
 #####      sudo_user: '{{ oracle_user }}'
 #####    - role: fmw-managed-server

@@ -55,6 +55,6 @@
  
 - name: (un)deploy applications
   sudo: true
-  shell: "id; {{ wlst_sh }} -loadProperties {{ environment_properties }} {{ deploy_environment_py }}"
+  win_shell: "{{ oracle_base }}/common/bin/wlst.cmd -loadProperties {{ environment_properties }} {{ deploy_environment_py }}"
   when: deploy_environment_py_created.changed or deployment_artifacts_copied.changed
 

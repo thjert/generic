@@ -10,14 +10,14 @@ what_to_do='undeploy';
 target_names='AdminServer';
 
 print 'CREATE VARIABLES';
-domain_application_home='/oracle/fmw12.2.1/config/Domains/custom_domain/apps';
-domain_configuration_home='/oracle/fmw12.2.1/config/Domains/custom_domain/config';
+domain_application_home='/oracle/wls10.3.6/config/Domains/custom_domain/apps';
+domain_configuration_home='/oracle/wls10.3.6/config/Domains/custom_domain/config';
 domain_name='custom_domain';
-fusion_middleware_home='/oracle/fmw12.2.1/product/Oracle_Home';
-java_home='/oracle/fmw12.2.1/jdk1.8.0_161';
-middleware_home='/oracle/fmw12.2.1/product/Oracle_Home';
-node_manager_home='/oracle/fmw12.2.1/config/Domains/custom_domain/nodemanager';
-weblogic_home='/oracle/fmw12.2.1/product/Oracle_Home/wlserver';
+fusion_middleware_home='/oracle/wls10.3.6/product/Oracle_Home';
+java_home='/oracle/wls10.3.6/jdk1.8.0_161';
+middleware_home='/oracle/wls10.3.6/product/Oracle_Home';
+node_manager_home='/oracle/wls10.3.6/config/Domains/custom_domain/nodemanager';
+weblogic_home='/oracle/wls10.3.6/product/Oracle_Home/wlserver';
 admin_server_listen_address='localhost'
 admin_server_listen_port='7001'
 admin_username='weblogic'

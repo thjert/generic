@@ -1,24 +1,29 @@
 # ==> Ansible Role for configure, start and autostart on reboot Node manager
 # ==> for a WebLogic 12c R2 Domain
 - name: Copy Nodemanager Properties file
-  template: src=nodemanager.properties dest={{ domain_home }}/nodemanager/ owner={{ oracle_user }} group={{ oracle_group }}
+  ###win_template: src=nodemanager.properties dest={{ domain_home }}/nodemanager/nodemanager.properties
+  win_template: src=nodemanager.properties dest={{ oracle_base }}/config/Domains/{{domain_name }}/config/nodemanager/nodemanager.properties
   tags:
     - start-nodemanager
 
 # ==> Create startup script for nodemanager
-- name: Copy nodemanager systemd script
-  template: src=nodemanager.service dest=/etc/systemd/system/ mode=0664
-  tags:
-    - start-nodemanager
-- name: Enable nodemanager as linux service
-  command: 'systemctl enable nodemanager'
-  tags:
-    - start-nodemanager
-- name: Start Node Manager
-  command: 'systemctl start nodemanager'
-  tags:
-    - start-nodemanager
-- name: Waiting for nodemanager to come up
-  wait_for: port=5556 delay=5 timeout=90
-  tags:
-    - start-nodemanager
+#####- name: Copy nodemanager systemd script
+#####  win_template: src=nodemanager.service dest=/etc/systemd/system/ mode=0664
+#####  tags:
+#####    - start-nodemanager
+#####
+#####- name: Enable nodemanager as linux service
+#####  command: 'systemctl enable nodemanager'
+#####  tags:
+#####    - start-nodemanager
+#####- name: Start Node Manager
+#####  command: 'systemctl start nodemanager'
+#####  tags:
+#####    - start-nodemanager
+#####- name: Waiting for nodemanager to come up
+#####  wait_for: port={{ node_manager_listen_port }} delay=5 timeout=90
+#####  tags:
+#####    - start-nodemanager
+
+- name: Start nodemanager
+  win_shell: "{{ oracle_base }}/server/bin/startNodeManager.cmd {{ node_manager_listen_address }} {{ node_manager_listen_port }} > {{ oracle_base }}/product/Oracle_Home/logs/startNodeManager.log"

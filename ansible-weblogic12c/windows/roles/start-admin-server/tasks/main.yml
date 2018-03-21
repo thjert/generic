@@ -30,7 +30,7 @@
   register: deployment_lib_copied
 
 - name: Execute start Admin Server script
-  shell: "{{ middleware_common_home }}/common/bin/wlst.sh {{ mw_installer_folder }}/start-admin-server.py > {{ oracle_base }}/logs/ADMIN_STARTUP_{{ domain_name }}_$(date +'%F') "
+  win_shell: "{{ oracle_base }}/common/bin/wlst.cmd {{ mw_installer_folder }}/start-admin-server.py > {{ oracle_base }}/logs/ADMIN_STARTUP_{{ domain_name }}_$(date +'%F') "
   sudo_user: '{{ oracle_user }}'
   async: 45
   poll: 0

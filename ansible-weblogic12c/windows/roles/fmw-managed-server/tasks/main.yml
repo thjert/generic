@@ -15,7 +15,7 @@
 - name: Copy create managed server script
   template: src=create-managed.py dest={{ mw_installer_folder }}
 - name: Execute create managed server script
-  shell: '{{middleware_common_home }}/common/bin/wlst.sh {{ mw_installer_folder }}/create-managed.py'
+  win_shell: '{{ oracle_base }}/common/bin/wlst.cmd {{ mw_installer_folder }}/create-managed.py'
     
 # ==> Start managed server
 - name: Create security folder for managed server
@@ -25,7 +25,7 @@
 - name: Copy Start Managed Server Script
   template: src=start-managed-server.py dest={{ mw_installer_folder }}
 - name: Start Managed Server
-  shell: "{{ middleware_common_home }}/common/bin/wlst.sh {{ mw_installer_folder }}/start-managed-server.py"
+  win_shell: "{{ middleware_common_home }}/common/bin/wlst.cmd {{ mw_installer_folder }}/start-managed-server.py"
   async: 1000
   poll: 0
 - name: Wait for Managed Server to startup 
