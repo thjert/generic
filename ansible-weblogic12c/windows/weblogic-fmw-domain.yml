@@ -12,7 +12,7 @@
   roles:
     - role: windows-wls
     - role: windows-jdk
-    - role: fmw-software
+    - role: wls-software
     - role: create-domain
     - role: setup-nodemanager
     - role: start-admin-server
