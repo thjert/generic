@@ -1,0 +1,28 @@
+- name: Start Node Manager
+  win_shell: 'systemctl start nodemanager'
+  tags:
+    - start-nodemanager
+
+- name: Waiting for nodemanager to come up
+  wait_for: port={{ node_manager_listen_port }} delay=5 timeout=90
+  tags:
+    - start-nodemanager
+
+# ==> Start managed server
+- name: Create security folder for managed server
+  win_file: state=directory path={{ domains_home }}/{{ domain_name }}/servers/{{ managed_server_name }}/security
+
+- name: Create boot properties file for managed server
+  win_template: src=boot.properties dest={{ domain_home }}/servers/{{ managed_server_name }}/security/
+
+- name: Copy Start Managed Server Script
+  win_template: src=start-managed-server.py dest={{ mw_installer_folder }}
+
+- name: Start Managed Server
+  win_shell: "{{ oracle_base }}/common/bin/wlst.cmd {{ mw_installer_folder }}/start-managed-server.py"
+  async: 1000
+  poll: 0
+
+- name: Wait for Managed Server to startup 
+  wait_for: host={{ server_hostname }} port={{ managed_server_port }} delay=5 timeout=90
+
