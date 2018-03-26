@@ -1,0 +1,24 @@
+---
+- name: Configure Windows 10  with WebLogic 10.3.6 domain
+  hosts: weblogic_win
+  ###  sudo: True
+  vars_files:
+    # User defined variables for infrastructure
+    - infra-vars.yml
+    # Common properties. You may not delete this
+    - wls-vars.yml
+    # Infrastructure passwords
+    - secrets.yml
+  roles:
+###    - role: windows-wls
+###    - role: windows-jdk
+###    - role: fmw-software
+###    - role: fmw-domain
+###    - role: node-manager
+#####    - role: start-admin-server
+    - role: fmw-managed-server
+#####  pre_tasks:
+#####    # ==> Fix hosts file. Remove hostname from local loop. A workaround for
+#####    # remove hostname to local loop
+#####    - name: fix host file 127.0.0.1 entry
+#####      lineinfile: dest=/etc/hosts regexp='^127\.0\.0\.1' line='127.0.0.1 localhost localhost.localdomain localhost4 localhost4.localdomain4' owner=root group=root mode=0644

@@ -44,8 +44,10 @@
 
 ### Thomas tillägg
 
+[adminserver-win]
+norr-thohje
 [adminserver]
 weblogic
 
-[managedservers]
-weblogicms
+###[managedservers]
+###weblogicms

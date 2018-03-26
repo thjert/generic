@@ -1,0 +1,9 @@
+---
+# roles/common/vars/main.yml
+##### deploy actions #####
+#deploy_targets:                        "{{ cluster_name }}" Detta är nog det som är att föredra om man har installerat ett cluster.
+# Thomas Hjert - När man gör deploy till admin server så hittas inte biblioteken for beehive och struts även om dom finns där.
+#deploy_targets:                        "{{admin_server_name}},{{managed_server_name}}"
+deploy_targets:                        "{{managed_server_name}}"
+# deploy_action is either deploy or undeploy
+deploy_action:                         "deploy"

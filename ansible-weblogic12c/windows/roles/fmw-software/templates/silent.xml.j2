@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<bea-installer> 
+  <input-fields>
+    <data-value name="BEAHOME" value="c:\oracle\wls10.3.6\product\Oracle_Home" />
+    <data-value name="WLS_INSTALL_DIR" value="c:\oracle\wls10.3.6" />
+<!--
+If you do not include the COMPONENT_PATHS data-value name in the silent.xml file, the complete Oracle WebLogic Server and Oracle Workshop for WebLogic are installed.
+    <data-value name="COMPONENT_PATHS" value="WebLogic Server/Core Application Server|WebLogic Server/Administration Console" />  
+--> 
+    <data-value name="INSTALL_NODE_MANAGER_SERVICE" value="yes"  />
+    <data-value name="NODEMGR_PORT" value="{{ node_manager_listen_port }}" />
+    <data-value name="INSTALL_SHORTCUT_IN_ALL_USERS_FOLDER" value="yes"/>
+<!--
+    <data-value name="LOCAL_JVMS" value="{{ jdk_folder }}"/>
+--> 
+   </input-fields> 
+</bea-installer>
+<!--
+Silent installer option: -mode=silent -silent_xml=C:\bea\silent.xml
+--> 

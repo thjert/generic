@@ -1,0 +1,52 @@
+ 
+- name: create deploy_environment.py
+  win_template:
+    src: roles/wls-deploy-applications/templates/deploy_environment_py_j2 
+    dest: "{{ deploy_environment_py }}"
+    owner: "{{ oracle_user }}"
+    group: "{{ oracle_group }}"
+    mode: 0644
+  register: deploy_environment_py_created
+
+- name: create directory for extensions
+  win_file: path="{{ domain_extension_home }}" state=directory owner={{ oracle_user }} group={{ oracle_group }} recurse=yes
+
+- name: copy extensions
+  win_copy:
+    src=roles/common/files/weblogic/lib/
+    dest="{{ domain_extension_home }}"
+    owner="{{ oracle_user }}"
+    group="{{ oracle_group }}"
+  register: deployment_lib_copied
+ 
+- name: create directory for applications
+  win_file: path="{{ domain_application_home }}" state=directory owner={{ oracle_user }} group={{ oracle_group }} recurse=yes
+ 
+- name: copy deployment artifacts
+  win_copy:
+    src=roles/common/files/weblogic/deploy/
+    dest="{{ domain_application_home }}"
+    owner="{{ oracle_user }}"
+    group="{{ oracle_group }}"
+  register: deployment_artifacts_copied
+ 
+- name: debug registered values
+  debug: 
+    var={{ item }}
+  with_items:
+    - deploy_environment_py_created
+    - deployment_artifacts_copied
+ 
+- name: Check if conditions to deploy are met or not.
+  debug:
+    msg: "Conditions to deploy are not met, either remove {{ deploy_environment_py }} or clean the directory {{ domain_application_home }} in the host"
+  when: not deploy_environment_py_created.changed and not deployment_artifacts_copied.changed
+
+- name: debug value of deploy_action-variable
+  debug: 
+    msg: "Value of deploy_action is {{ deploy_action }}"
+ 
+- name: (un)deploy applications
+  win_shell: "{{ oracle_base }}/common/bin/wlst.cmd -loadProperties {{ environment_properties }} {{ deploy_environment_py }}"
+  when: deploy_environment_py_created.changed or deployment_artifacts_copied.changed
+

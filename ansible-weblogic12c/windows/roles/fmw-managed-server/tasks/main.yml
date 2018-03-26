@@ -1,0 +1,33 @@
+###### ==> Copy library extensions 
+#####- name: copy library extensions
+#####  sudo: true
+#####  copy:
+#####    src="roles/common/files/weblogic/lib/"
+#####    dest="{{ domain_extension_home }}"
+#####    owner="{{ oracle_user }}"
+#####    group="{{ oracle_group }}"
+#####  register: extension_lib_copied
+
+###    dest="{{ domain_application_home }}"
+###    dest="{{ domain_application_home }}"
+ 
+# ==> Create managed server on Domain
+- name: Copy create managed server script
+  win_template: src=create-managed.py dest={{ mw_installer_folder }}
+
+- name: Execute create managed server script
+  win_shell: '{{ oracle_base }}/common/bin/wlst.cmd {{ mw_installer_folder }}/create-managed.py'
+    
+###### ==> Start managed server
+#####- name: Create security folder for managed server
+#####  file: state=directory path={{ domains_home }}/{{ domain_name }}/servers/{{ managed_server_name }}/security
+#####- name: Create boot properties file for managed server
+#####  template: src=boot.properties dest={{ domain_home }}/servers/{{ managed_server_name }}/security/
+#####- name: Copy Start Managed Server Script
+#####  template: src=start-managed-server.py dest={{ mw_installer_folder }}
+#####- name: Start Managed Server
+#####  win_shell: "{{ middleware_common_home }}/common/bin/wlst.cmd {{ mw_installer_folder }}/start-managed-server.py"
+#####  async: 1000
+#####  poll: 0
+#####- name: Wait for Managed Server to startup 
+#####  wait_for: host={{ server_hostname }} port={{ managed_server_port }} delay=5 timeout=90

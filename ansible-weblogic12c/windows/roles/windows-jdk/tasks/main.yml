@@ -1,0 +1,36 @@
+# ==> Install JDK
+#############################################################################################################
+### JDK ingår i WLS-paketet ...
+#############################################################################################################
+#####- name: Copy jdk archive to host
+#####  win_copy: 
+#####    src: "{{ software_directory }}/{{ jdk_installation_archive }}"
+#####    dest: "{{ software_directory }}/{{ jdk_installation_archive }}"
+#####  args:
+#####    force: no
+######
+######  Variabeln jdk_folder var tvungen att innehålla \ och INTE /, dvs c:/oracle/... funkade INTE medan c:\oracle\... funkade
+######
+#####- win_shell: "{{ software_directory }}/{{ jdk_installation_archive }} /s ADDLOCAL=\"ToolsFeature,PublicjreFeature\" /INSTALLDIR=\"{{ jdk_folder }}\" /INSTALLDIRPUBJRE=\"{{ jdk_folder }}\" /L \"{{ jdk_folder }}/{{ jdk_installation_archive }}.log\""
+#####
+
+#####- name: Change ownership of jdk folder
+#####  win_acl: 
+#####    user: "{{ oracle_user }}"
+#####    path: "{{ jdk_folder }}"
+#####    rights: FullControl
+#####    type: allow
+#####    state: present
+#####    inherit: ContainerInherit, ObjectInherit
+#####
+#####- name: Change entropy device for java
+#####  command: "sed -i.bak 's/\\/dev\\/random/\\/dev\\/.\\/urandom/' {{ jdk_folder }}/jre/lib/security/java.security"
+#####
+#####- name: Add JAVA_HOME environment variariables in bashrc
+#####  lineinfile: dest='/home/{{ oracle_user }}/.bashrc' line='export JAVA_HOME={{ jdk_folder }}'
+#####
+#####- name: Add Java bin folder to path in bashrc
+#####  lineinfile: dest='/home/{{ oracle_user }}/.bashrc' line='export PATH=$PATH:$JAVA_HOME/bin'
+#####
+#####- name: Change Java security to speedup WL
+#####  lineinfile: dest='/home/{{ oracle_user }}/.bashrc' line='export JAVA_OPTIONS="-Djava.security.egd=file:/dev/./urandom"'

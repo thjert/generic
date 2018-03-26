@@ -1,0 +1,66 @@
+---
+# ==> Extra configuration added by Thomas Hjert
+
+# ==> Configure Windows
+###- name: Install required libraries
+###  yum: name={{ item }} state=present
+###  with_items: "{{ packages_list }} "
+
+###- name: Disable SELinux
+###  selinux: state=disabled
+
+###- name: Disable Firewall Deamon (firewalld)
+###  service: name=firewalld state=stopped enabled=no
+
+###- name: Change kernel parameters
+###  sysctl: name="{{ item.key }}" value="{{ item.value }}" state=present
+###  with_dict: "{{ kernel_params }}"
+
+# ==> Create user and groups
+- name: Create groups
+  win_group: name={{ oracle_group }} state=present
+  ignore_errors: True
+
+- name: Create user
+  win_user: name={{ oracle_user }} groups={{ oracle_group }} password={{ oracle_os_user_pass }}
+  ignore_errors: True
+
+###- name: Ensure groupmembership
+###- win_group_membership: name={{ oracle_group }} members={{ oracle_user }} state=present
+
+###- name: Add a local and domain user to a local group
+###  win_group_membership:
+###    name: Remote Desktop Users
+###    members:
+###      - NewLocalAdmin
+###      - DOMAIN\TestUser
+###    state: present
+  
+# ==> Add open file and process limits for oracle user
+###- name: Create a shell profile with file and process limits for oracle user
+###  template: src=oracle-limits.sh dest=/etc/profile.d/
+
+# ==> Add limits for oracle user
+###- name: Add oracle user limits
+###  lineinfile: dest=/etc/security/limits.conf line='{{ oracle_user }} {{ item.limit }} {{ item.type}} {{ item.value }}'
+###  with_items:
+###    - { limit: 'soft', type: nofile, value: '{{ soft_no_file }}' }
+###    - { limit: 'hard', type: nofile, value: '{{ hard_no_file }}' }
+###    - { limit: 'soft', type: nproc, value: '{{ soft_nproc }}' }
+###    - { limit: 'hard', type: nproc, value: '{{ hard_nproc }}' }
+
+# ==> Create Base Directories
+- name: Create Oracle Home directory
+  win_file: state=directory path={{ middleware_home }} owner={{ oracle_user }} group={{ oracle_group }}
+
+- name: Create Domain Home directory
+  win_file: state=directory path={{ domains_home }} owner={{ oracle_user }} group={{ oracle_group }}
+
+- name: Create Applications Home directory
+  win_file: state=directory path={{ applications_home }} owner={{ oracle_user }} group={{ oracle_group }}
+
+- name: Create Software directory
+  win_file: state=directory path={{ software_directory }} owner={{ oracle_user }} group={{ oracle_group }} 
+
+- name: Create JDK directory
+  win_file: state=directory path={{ jdk_folder }} owner={{ oracle_user }} group={{ oracle_group }} 
