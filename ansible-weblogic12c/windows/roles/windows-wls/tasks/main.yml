@@ -50,6 +50,9 @@
 ###    - { limit: 'hard', type: nproc, value: '{{ hard_nproc }}' }
 
 # ==> Create Base Directories
+- name: Create logs under Oracle Base directory
+  win_file: state=directory path={{ oracle_base }}/logs owner={{ oracle_user }} group={{ oracle_group }}
+
 - name: Create Oracle Home directory
   win_file: state=directory path={{ middleware_home }} owner={{ oracle_user }} group={{ oracle_group }}
 

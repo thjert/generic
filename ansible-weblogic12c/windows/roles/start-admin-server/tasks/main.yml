@@ -21,15 +21,15 @@
   tags:
     - start-admin-server
 
-- name: Distribute removeAdminServerService.cmd based on template (New file to setup AdminServer as a service)
-  win_template: src=removeAdminServerService.cmd.j2 dest={{ oracle_base }}/server/bin/removeAdminServerService.cmd owner={{ oracle_user }} group={{ oracle_group }}
-  tags:
-    - start-admin-server
-
-- name: Execute removeAdminServerService.cmd that will create the service
-  win_shell: "{{ oracle_base }}/server/bin/removeAdminServerService.cmd > {{ oracle_base }}/logs/removeAdminServerService_{{ domain_name }}.log"
-  tags:
-     - start-admin-server
+#####- name: Distribute removeAdminServerService.cmd based on template (New file to setup AdminServer as a service)
+#####  win_template: src=removeAdminServerService.cmd.j2 dest={{ oracle_base }}/server/bin/removeAdminServerService.cmd owner={{ oracle_user }} group={{ oracle_group }}
+#####  tags:
+#####    - start-admin-server
+#####
+#####- name: Execute removeAdminServerService.cmd that will create the service
+#####  win_shell: "{{ oracle_base }}/server/bin/removeAdminServerService.cmd > {{ oracle_base }}/logs/removeAdminServerService_{{ domain_name }}.log"
+#####  tags:
+#####     - start-admin-server
 
 - name: Distribute addAdminServerService.cmd based on template (New file to setup AdminServer as a service)
   win_template: src=addAdminServerService.cmd.j2 dest={{ oracle_base }}/server/bin/addAdminServerService.cmd owner={{ oracle_user }} group={{ oracle_group }}
@@ -40,6 +40,16 @@
   win_shell: "{{ oracle_base }}/server/bin/addAdminServerService.cmd > {{ oracle_base }}/logs/addAdminServerService_{{ domain_name }}.log"
   tags:
      - start-admin-server
+
+#####- name: Start AdminServerService
+#####  win_shell: c:\windows\system32\sc start "beasvc {{ domain_name }}_{{ admin_server_name }}"
+
+- name: Set service startup mode to auto and ensure it is started
+  win_service:
+    name:  "beasvc {{ domain_name }}_{{ admin_server_name }}"
+    start_mode: auto
+    state: started
+  register: AdminServerServiceRunning
 
 #####- name: Create the security folder on Admin Server
 #####  win_file:
@@ -69,14 +79,14 @@
 #####    owner="{{ oracle_user }}"
 #####    group="{{ oracle_group }}"
 #####  register: deployment_lib_copied
-
-- name: Create the logs folder
-  win_file:
-    path: "{{ oracle_base }}/logs"
-    state: directory
-  tags:
-    - start-admin-server
-
+#####
+#####- name: Create the logs folder
+#####  win_file:
+#####    path: "{{ oracle_base }}/logs"
+#####    state: directory
+#####  tags:
+#####    - start-admin-server
+#####
 #####- name: Execute start Admin Server script
 #####  ###win_shell: "{{ oracle_base }}/common/bin/wlst.cmd {{ oracle_base }}/installer/start-admin-server.py > {{ oracle_base }}/logs/ADMIN_STARTUP_{{ domain_name }}_$(date +'%F') "
 #####  win_shell: "{{ oracle_base }}/common/bin/wlst.cmd {{ oracle_base }}/installer/start-admin-server.py > {{ oracle_base }}/logs/ADMIN_STARTUP_{{ domain_name }}"
@@ -84,7 +94,13 @@
 #####  tags:
 #####     - start-admin-server
 #####
+##### Below comes with 2.4 of Ansible, current version is lover.
 #####- name: Wait for Admin Server to startup
-#####  wait_for: port={{ admin_server_port }} delay=3 timeout=90
+#####  win_wait_for:
+#####    host: "{{ admin_server_hostname }}"
+#####    port: "{{ admin_server_port }}"
+#####    delay: 3
+#####    sleep: 2
+#####    timeout: 90
 #####  tags:
 #####    - start-admin-server

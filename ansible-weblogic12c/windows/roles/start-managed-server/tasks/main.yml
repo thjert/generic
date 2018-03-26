@@ -34,15 +34,15 @@
   tags:
     - start-admin-server
 
-- name: Distribute removeManagedServerService.cmd based on template (New file to setup AdminServer as a service)
-  win_template: "src=removeManagedServerService.cmd.j2 dest={{ oracle_base }}/server/bin/removeManagedServerService.cmd"
-  tags:
-    - start-admin-server
-
-- name: Execute removeManagedServerService.cmd that will create the service
-  win_shell: "{{ oracle_base }}/server/bin/removeManagedServerService.cmd > {{ oracle_base }}/logs/removeManagedServerService_{{ domain_name }}.log"
-  tags:
-     - start-admin-server
+#####- name: Distribute removeManagedServerService.cmd based on template (New file to setup AdminServer as a service)
+#####  win_template: "src=removeManagedServerService.cmd.j2 dest={{ oracle_base }}/server/bin/removeManagedServerService.cmd"
+#####  tags:
+#####    - start-admin-server
+#####
+#####- name: Execute removeManagedServerService.cmd that will create the service
+#####  win_shell: "{{ oracle_base }}/server/bin/removeManagedServerService.cmd > {{ oracle_base }}/logs/removeManagedServerService_{{ domain_name }}.log"
+#####  tags:
+#####     - start-admin-server
 
 - name: Distribute addManagedServerService.cmd based on template (New file to setup AdminServer as a service)
   win_template: "src=addManagedServerService.cmd.j2 dest={{ oracle_base }}/server/bin/addManagedServerService.cmd"
@@ -53,4 +53,11 @@
   win_shell: "{{ oracle_base }}/server/bin/addManagedServerService.cmd > {{ oracle_base }}/logs/addManagedServerService_{{ domain_name }}.log"
   tags:
      - start-admin-server
+  when: AdminServerServiceRunning
 
+- name: Start ManagedServerService
+  win_service: 
+    name: "beasvc {{ domain_name }}_{{ managed_server_name }}"
+    start_mode: "auto"
+    state: started
+  when: AdminServerServiceRunning

@@ -10,12 +10,12 @@
     # Infrastructure passwords
     - secrets.yml
   roles:
-#####    - role: windows-wls
-#####    - role: windows-jdk
-#####    - role: fmw-software
-#####    - role: fmw-domain
-#####    - role: node-manager
-#####    - role: start-admin-server
+    - role: windows-wls
+    - role: windows-jdk
+    - role: fmw-software
+    - role: fmw-domain
+    - role: node-manager
+    - role: start-admin-server
     - role: fmw-managed-server
     - role: start-managed-server
 #####  pre_tasks:
