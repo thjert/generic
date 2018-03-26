@@ -12,14 +12,14 @@
   roles:
     - role: linux-wls
     - role: linux-jdk
-    - role: fmw-software
+    - role: wls-software
       sudo_user: '{{ oracle_user }}'
-    - role: fmw-domain
+    - role: create-domain
       sudo_user: '{{ oracle_user }}'
-    - role: node-manager
+    - role: setup-nodemanager
     - role: start-admin-server
       sudo_user: '{{ oracle_user }}'
-    - role: fmw-managed-server
+    - role: create-managed-server
       sudo_user: '{{ oracle_user }}'
   pre_tasks:
     # ==> Fix hosts file. Remove hostname from local loop. A workaround for
