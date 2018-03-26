@@ -9,4 +9,4 @@
     - deployment-vars.yml
   roles:
     - common
-    - wls-deploy-applications 
+    - deploy-applications 
