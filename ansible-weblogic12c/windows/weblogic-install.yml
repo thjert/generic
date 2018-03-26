@@ -12,11 +12,11 @@
   roles:
     - role: windows-wls
     - role: windows-jdk
-    - role: fmw-software
-    - role: fmw-domain
-    - role: node-manager
+    - role: wls-software
+    - role: create-domain
+    - role: setup-nodemanager
     - role: start-admin-server
-    - role: fmw-managed-server
+    - role: create-managed-server
     - role: start-managed-server
 
 #####  pre_tasks:
