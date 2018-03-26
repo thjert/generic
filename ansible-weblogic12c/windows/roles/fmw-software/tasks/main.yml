@@ -20,6 +20,12 @@
 - name: execute Weblogic installer
   win_shell: "{{ software_directory }}/{{ mw_installer }} -mode=silent -silent_xml={{ oracle_base }}/installer/silent.xml -log={{ mw_installer_folder }}/Weblogic-installer.log"
 
+- name: Create the directory structure required for setDomainEnv.cmd based on template
+  win_file: "state=directory path={{ oracle_base }}/config/Domains/{{ domain_name }}/bin owner={{ oracle_user }} group={{ oracle_group }}"
+
+- name: Create the file setDomainEnv.cmd based on template
+  win_template: src="setDomainEnv.cmd.j2" dest="{{ oracle_base }}/config/Domains/{{ domain_name }}/bin/setDomainEnv.cmd"
+
 #####- name: Update 'JVM_ARGS' variable within wlst script
 #####  lineinfile:
 #####    dest: "{{ oracle_base }}/common/bin/wlst.cmd"

@@ -10,13 +10,14 @@
     # Infrastructure passwords
     - secrets.yml
   roles:
-###    - role: windows-wls
-###    - role: windows-jdk
-###    - role: fmw-software
-###    - role: fmw-domain
-###    - role: node-manager
+#####    - role: windows-wls
+#####    - role: windows-jdk
+#####    - role: fmw-software
+#####    - role: fmw-domain
+#####    - role: node-manager
 #####    - role: start-admin-server
     - role: fmw-managed-server
+    - role: start-managed-server
 #####  pre_tasks:
 #####    # ==> Fix hosts file. Remove hostname from local loop. A workaround for
 #####    # remove hostname to local loop
