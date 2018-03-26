@@ -120,8 +120,7 @@ if "%WL_USE_IA64DLL%" == "true" set EXTRAPATH=%WL_HOME%\server\native\win\64\;%W
 if "%WL_USE_AMD64DLL%" == "true" set EXTRAPATH=%WL_HOME%\server\native\win\x64\;%WL_HOME%\server\bin;%JAVA_HOME%\jre\bin;%JAVA_HOME%\bin;%WL_HOME%\server\native\win\x64\oci920_8
 
 rem *** Install the service
-
-"%WL_HOME%\server\bin\beasvc" -install -svcname:"beasvc %DOMAIN_NAME%_%SERVER_NAME%" -delay:240000 -javahome:"%JAVA_HOME%" -execdir:"%USERDOMAIN_HOME%" -maxconnectretries:"%MAX_CONNECT_RETRIES%" -host:"%HOST%" -port:"%PORT%" -extrapath:"%EXTRAPATH%" -password:"%WLS_PW%" -cmdline:%CMDLINE% -log:"{{ oracle_base }}/logs/{{ admin_server_name }}-{{ domain_name }}.log"
-rem *** "%WL_HOME%\server\bin\beasvc" -install -svcname:"Oracle WebLogic %SERVER_NAME%_%DOMAIN_NAME%" -delay:240000 -javahome:"%JAVA_HOME%" -execdir:"%USERDOMAIN_HOME%" -maxconnectretries:"%MAX_CONNECT_RETRIES%" -host:"%HOST%" -port:"%PORT%" -extrapath:"%EXTRAPATH%" -password:"%WLS_PW%" -cmdline:%CMDLINE% -log:"{{ oracle_base }}/logs/{{ admin_server_name }}-{{ domain_name }}.log"
+rem *** "%WL_HOME%\server\bin\beasvc" -install -svcname:"beasvc %DOMAIN_NAME%_%SERVER_NAME%" -depend:"beasvc {{ domain_name }}_{{ admin_server_name }}" -javahome:"%JAVA_HOME%" -execdir:"%USERDOMAIN_HOME%" -maxconnectretries:"%MAX_CONNECT_RETRIES%" -host:"%HOST%" -port:"%PORT%" -extrapath:"%EXTRAPATH%" -password:"%WLS_PW%" -cmdline:%CMDLINE% -log:"{{ oracle_base }}/logs/{{ managed_server_name }}-{{ domain_name }}.log"
+"%WL_HOME%\server\bin\beasvc" -install -svcname:"beasvc %DOMAIN_NAME%_%SERVER_NAME%" -javahome:"%JAVA_HOME%" -execdir:"%USERDOMAIN_HOME%" -maxconnectretries:"%MAX_CONNECT_RETRIES%" -host:"%HOST%" -port:"%PORT%" -extrapath:"%EXTRAPATH%" -password:"%WLS_PW%" -cmdline:%CMDLINE%
 
 ENDLOCAL

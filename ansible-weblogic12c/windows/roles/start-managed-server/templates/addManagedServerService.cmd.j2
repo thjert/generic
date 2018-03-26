@@ -1,0 +1,17 @@
+echo off
+SETLOCAL
+set DOMAIN_NAME={{ domain_name }}
+set USERDOMAIN_HOME={{ oracle_base}}/config/Domains/{{ domain_name }}
+set SERVER_NAME={{ managed_server_name }}
+set PRODUCTION_MODE=true
+set ADMIN_URL=http://192.168.108.110:{{ admin_server_port }}
+set MEM_ARGS=-Xms40m -Xmx250m
+set WL_HOME={{ oracle_base }}
+set WLS_USER=weblogic
+set WLS_PW=welcome1
+set HOST={{ managed_server_hostname }}
+set PORT={{ managed_server_port }}
+call "%WL_HOME%\common\bin\commEnv.cmd"
+set
+call "{{ oracle_base }}\server\bin\installSvcMS.cmd"
+ENDLOCAL
