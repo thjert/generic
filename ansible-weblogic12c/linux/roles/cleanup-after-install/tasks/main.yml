@@ -1,0 +1,11 @@
+# ==> Extra configuration added by Thomas Hjert
+# ==> Cleanup after installation
+#
+- name: Cleanup after installtion
+  file: path='{{ item.value }}' state=absent
+  with_items:
+          - { value: '{{ oracle_base }}/installer/create-domain.py' }
+          - { value: '{{ oracle_base }}/installer/start-admin-server.py' }
+          - { value: '{{ oracle_base }}/installer/create-managed.py' }
+          - { value: '{{ oracle_base }}/installer/start-managed-server.py' }
+  when: ManagedServerStarted

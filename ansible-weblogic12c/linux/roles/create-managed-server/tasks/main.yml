@@ -30,3 +30,4 @@
   poll: 0
 - name: Wait for Managed Server to startup 
   wait_for: host={{ server_hostname }} port={{ managed_server_port }} delay=5 timeout=90
+  register: ManagedServerStarted
