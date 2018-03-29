@@ -15,10 +15,17 @@ mw_installer: 'fmw_12.2.1.2.0_wls.jar'
 domain_name: 'custom_domain'
 
 # Nodemanager and server settings
-node_manager_listen_port: '5556'
-node_manager_listen_address: 'localhost'
-admin_server_hostname: 'localhost'
+node_manager_address: '192.168.56.14'
+node_manager_hostname: '192.168.56.14'
+node_manager_port: '5556'
+#
+admin_server_address: '192.168.56.14'
+admin_server_hostname: '192.168.56.14'
+admin_server_name: 'AdminServer'
 admin_server_port: '7001'
+#
+managed_server_hostname: '192.168.56.14'
+managed_server_address: '192.168.56.14'
 managed_server_name: 'managed_1'
 managed_server_port: '8001'
 #

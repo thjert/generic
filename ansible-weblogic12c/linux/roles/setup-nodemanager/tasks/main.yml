@@ -22,6 +22,6 @@
     - start-nodemanager
 
 - name: Waiting for nodemanager to come up
-  wait_for: port={{ node_manager_listen_port }} delay=5 timeout=150
+  wait_for: port={{ node_manager_port }} host={{ node_manager_address }} delay=5 timeout=90
   tags:
     - start-nodemanager

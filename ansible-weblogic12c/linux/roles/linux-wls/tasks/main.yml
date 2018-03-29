@@ -16,12 +16,15 @@
   with_dict: "{{ kernel_params }}"
 
 # ==> Create user and groups
+
 - name: Create groups
   group: name={{ oracle_group }} state=present
+
 - name: Create user
   user: name={{ oracle_user }} groups={{ oracle_group }} password={{ oracle_os_user_pass }}
   
 # ==> Add open file and process limits for oracle user
+
 - name: Create a shell profile with file and process limits for oracle user
   template: src=oracle-limits.sh dest=/etc/profile.d/
 

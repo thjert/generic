@@ -37,16 +37,24 @@ cmo.setNodeManagerUsername('{{ nodemanager_username }}');
 cmo.setNodeManagerPasswordEncrypted('{{ nodemanager_password }}');
 
 cd('/Server/' + '{{ admin_server_name }}');
-create('{{ admin_server_name }}','SSL');
+cmo.setListenPort({{ admin_server_port }});
+cmo.setListenAddress('{{ admin_server_address }}');
+
+try:
+  create('{{ admin_server_name }}','SSL');
+except ValueError:
+    print "SSL already exist, skipping ..."
+
 cd('SSL/' + '{{ admin_server_name }}');
 cmo.setHostnameVerificationIgnored(true);
 cmo.setHostnameVerifier(None);
 cmo.setTwoWaySSLEnabled(false);
 cmo.setClientCertificateEnforced(false);
 
-cd('/SecurityConfiguration/'+ domain_name +'/Realms/myrealm');
-cd('AuthenticationProviders/DefaultAuthenticator');
-set('ControlFlag', 'SUFFICIENT');
+## Kommenterar bort koden nedan. De är bortkommenterad i Windows
+##cd('/SecurityConfiguration/'+ domain_name +'/Realms/myrealm');
+##cd('AuthenticationProviders/DefaultAuthenticator');
+##set('ControlFlag', 'SUFFICIENT');
 cd('../../');
 # set('Arguments','-Xms=2048m -Xmx=2048m -XX:NewSize=512M -XX:MaxNewSize=512M -XX:PermSize=256M -XX:MaxPermSize=256M');
 print "Update domain";
