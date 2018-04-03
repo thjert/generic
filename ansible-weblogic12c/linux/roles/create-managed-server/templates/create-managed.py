@@ -7,14 +7,15 @@ startEdit();
 # applyJRF(target='{{ managed_server_name }}', domainDir='{{ domain_home }}');
 cd('/')
 
-try:
-cmo.createMachine('{{ managed_server_address }}')
-except ValueError:
+try: cmo.createMachine('{{ managed_server_address }}')
+except Exception:
     print "Machine already exists"
 
 cd('/Machines/' + '{{ managed_server_address }}' + '/NodeManager/' + '{{ managed_server_address }}')
 cmo.setListenAddress('{{ node_manager_address }}')
-cmo.setListenAddress('{{ node_manager_port }}')
+
+cmo.setListenPort('{{ node_manager_port }}')
+cmo.setNMType('{{ node_manager_type }}')
 
 cd('/')
 cmo.createServer('{{ managed_server_name }}')

@@ -29,13 +29,14 @@
 #####    group="{{ oracle_group }}"
 #####  register: deployment_lib_copied
 #####
-#####- name: Execute start Admin Server script
-#####  shell: "{{ middleware_common_home }}/common/bin/wlst.sh {{ mw_installer_folder }}/start-admin-server.py > {{ oracle_base }}/logs/ADMIN_STARTUP_{{ domain_name }}_$(date +'%F') "
-#####  sudo_user: '{{ oracle_user }}'
-#####  async: 45
-#####  poll: 0
-#####  tags:
-#####     - start-admin-server
+
+- name: Execute start Admin Server script
+  shell: "{{ middleware_common_home }}/common/bin/wlst.sh {{ mw_installer_folder }}/start-admin-server.py > {{ oracle_base }}/logs/ADMIN_STARTUP_{{ domain_name }}_$(date +'%F') "
+  sudo_user: '{{ oracle_user }}'
+  async: 45
+  poll: 0
+  tags:
+     - start-admin-server
 
 - name: Wait for Admin Server to startup
   wait_for: port={{ admin_server_port }} host={{ admin_server_address }} delay=3 timeout=90
