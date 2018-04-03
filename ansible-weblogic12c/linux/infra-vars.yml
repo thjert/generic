@@ -18,6 +18,8 @@ domain_name: 'custom_domain'
 node_manager_address: '192.168.56.14'
 node_manager_hostname: '192.168.56.14'
 node_manager_port: '5556'
+# Pga problem med SSL så ändrade jag till "plain".
+node_manager_type: 'plain'
 #
 admin_server_address: '192.168.56.14'
 admin_server_hostname: '192.168.56.14'

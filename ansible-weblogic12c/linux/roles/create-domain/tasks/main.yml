@@ -1,37 +1,37 @@
 ---
-# ==> Create new domain
-
-- name: copy create domain python script
-  template: src=create-domain.py dest={{ mw_installer_folder }} owner={{ oracle_user }} group={{ oracle_group }}
-  tags:
-    - create-domain
-
-- name: Execute create domain script
-  shell: "{{ middleware_common_home }}/common/bin/wlst.sh {{ mw_installer_folder }}/create-domain.py > {{ oracle_base }}/logs/create_domain_{{ domain_name }}_$(date +'%F').log 2>&1"
-  tags:
-    - create-domain
-
-- name: Update 'JAVA_OPTIONS' variable within startNodeManager script
-  lineinfile:
-    dest: "{{ domain_home }}/bin/startNodeManager.sh"
-    regexp: '^JAVA_OPTIONS='
-    line: 'JAVA_OPTIONS="${JAVA_OPTIONS} -Djava.security.egd=file:///dev/urandom -Dweblogic.RootDirectory=${DOMAIN_HOME}"'
-
-- name: Add Oracle Home environment variables
-  lineinfile: dest='/home/{{ oracle_user }}/.bashrc' line='export ORACLE_HOME={{ middleware_home }}'
-  tags:
-    - oracle-vars
-
-- name: Copy 'setUserOverrides.sh' script
-  template:
-    src: setUserOverrides.sh
-    dest: "{{ domain_home }}/bin/setUserOverrides.sh"
-    owner: "{{ oracle_user }}"
-    group: "{{ oracle_group }}"
-    mode: 0750
-  tags:
-    - create-domain
-
+###### ==> Create new domain
+#####
+#####- name: copy create domain python script
+#####  template: src=create-domain.py dest={{ mw_installer_folder }} owner={{ oracle_user }} group={{ oracle_group }}
+#####  tags:
+#####    - create-domain
+#####
+#####- name: Execute create domain script
+#####  shell: "{{ middleware_common_home }}/common/bin/wlst.sh {{ mw_installer_folder }}/create-domain.py > {{ oracle_base }}/logs/create_domain_{{ domain_name }}_$(date +'%F').log 2>&1"
+#####  tags:
+#####    - create-domain
+#####
+#####- name: Update 'JAVA_OPTIONS' variable within startNodeManager script
+#####  lineinfile:
+#####    dest: "{{ domain_home }}/bin/startNodeManager.sh"
+#####    regexp: '^JAVA_OPTIONS='
+#####    line: 'JAVA_OPTIONS="${JAVA_OPTIONS} -Djava.security.egd=file:///dev/urandom -Dweblogic.RootDirectory=${DOMAIN_HOME}"'
+#####
+#####- name: Add Oracle Home environment variables
+#####  lineinfile: dest='/home/{{ oracle_user }}/.bashrc' line='export ORACLE_HOME={{ middleware_home }}'
+#####  tags:
+#####    - oracle-vars
+#####
+#####- name: Copy 'setUserOverrides.sh' script
+#####  template:
+#####    src: setUserOverrides.sh
+#####    dest: "{{ domain_home }}/bin/setUserOverrides.sh"
+#####    owner: "{{ oracle_user }}"
+#####    group: "{{ oracle_group }}"
+#####    mode: 0750
+#####  tags:
+#####    - create-domain
+#####
 - name: Make changes in setDomainEnv.sh
   lineinfile:
           dest: "{{oracle_base }}/config/Domains/{{ domain_name }}/bin/setDomainEnv.sh"
@@ -52,6 +52,13 @@
           state: present
           regexp: "ADMIN_URL=.*http"
           line: "ADMIN_URL=\"http://{{ admin_server_address }}:{{ admin_server_port }}\""
+
+- name: Make changes in startManagedWebLogic.sh
+  lineinfile:
+          dest: "{{oracle_base }}/config/Domains/{{ domain_name }}/bin/startManagedWebLogic.sh"
+          state: present
+          regexp: "^SERVER_NAME="
+          line: "SERVER_NAME=\"{{ managed_server_name }}\""
 
 - name: Make changes in stopWebLogic.sh
   lineinfile:
