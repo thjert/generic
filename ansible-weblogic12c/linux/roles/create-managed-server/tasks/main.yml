@@ -1,22 +1,24 @@
-###### ==> Copy library extensions 
-#####- name: copy library extensions
-#####  sudo: true
-#####  copy:
-#####    src="roles/common/files/weblogic/lib/"
-#####    dest="{{ domain_extension_home }}"
-#####    owner="{{ oracle_user }}"
-#####    group="{{ oracle_group }}"
-#####  register: extension_lib_copied
-#####
+# ==> Copy library extensions 
+- name: copy library extensions
+  sudo: true
+  copy:
+    src="roles/common/files/weblogic/lib/"
+    dest="{{ domain_extension_home }}"
+    owner="{{ oracle_user }}"
+    group="{{ oracle_group }}"
+  register: extension_lib_copied
+
 # ==> Create managed server on Domain
 
 - name: Copy create managed server script
   template: src=create-managed.py dest={{ mw_installer_folder }}
 
+- name: Copy create GenBootStartupProps server script
+  template: src=create-genboot.py.j2 dest={{ mw_installer_folder }}/create-genboot.py
+
 - name: Execute create managed server script
   shell: '{{middleware_common_home }}/common/bin/wlst.sh {{ mw_installer_folder }}/create-managed.py'
     
-# ==> Start managed server
 - name: Create security folder for managed server
   file: state=directory path={{ domains_home }}/{{ domain_name }}/servers/{{ managed_server_name }}/security
 
@@ -26,10 +28,23 @@
 - name: Copy Start Managed Server Script
   template: src=start-managed-server.py dest={{ mw_installer_folder }}
 
-- name: Start Managed Server
-  shell: "{{ middleware_common_home }}/common/bin/wlst.sh {{ mw_installer_folder }}/start-managed-server.py"
+########## Skall starta från shell-script i stället för från python-script
+########## 
+##########- name: Start Managed Server
+##########  shell: "{{ middleware_common_home }}/common/bin/wlst.sh {{ mw_installer_folder }}/start-managed-server.py"
+##########  async: 1000
+##########  poll: 0
+##########
+# ==> Start managed server
+
+- name: Start Managed Server from script
+  shell: "nohup {{ oracle_base }}/config/Domains/{{ domain_name }}/bin/startManagedWebLogic.sh &"
   async: 1000
   poll: 0
 
 - name: Wait for Managed Server to startup 
   wait_for: host={{ managed_server_hostname }} port={{ managed_server_port }} delay=5 timeout=90
+
+- name: Execute create GenBootStartupProps script
+  shell: '{{middleware_common_home }}/common/bin/wlst.sh {{ mw_installer_folder }}/create-genboot.py'
+    

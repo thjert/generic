@@ -40,12 +40,16 @@ cd('/Server/' + '{{ admin_server_name }}');
 cmo.setListenPort({{ admin_server_port }});
 cmo.setListenAddress('{{ admin_server_address }}');
 
-try:
-  create('{{ admin_server_name }}','SSL');
-except ValueError:
+try: cmo.setMachine(getMBean('/Machines/' + '{{ admin_server_address }}'))
+except Exception:
+    print "setMachine failed"
+
+try: create('{{ admin_server_name }}','SSL');
+except Exception:
     print "SSL already exist, skipping ..."
 
 cd('SSL/' + '{{ admin_server_name }}');
+
 cmo.setHostnameVerificationIgnored(true);
 cmo.setHostnameVerifier(None);
 cmo.setTwoWaySSLEnabled(false);

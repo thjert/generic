@@ -33,30 +33,64 @@
     - create-domain
 
 - name: Make changes in setDomainEnv.sh
-  lineinfile:
-          dest: "{{oracle_base }}/config/Domains/{{ domain_name }}/bin/setDomainEnv.sh"
-          state: present
-          insertafter: "^# --- End Functions"
-          line: "WLS_USER={{ weblogic_admin }}; WLS_PW={{ weblogic_admin_pass }}; export WLS_USER; export WLS_PW"
+  blockinfile:
+    dest: "{{oracle_base }}/config/Domains/{{ domain_name }}/bin/setDomainEnv.sh"
+    marker: "#<!-- {mark} ANSIBLE MANAGED BLOCK -->"
+    insertafter: "^# --- End Functions"
+    content: |
+          ## This file should not have a setting of ADMIN_URL
+          WLS_USER={{ weblogic_admin }}
+          export WLS_USER
+          WLS_PW={{ weblogic_admin_pass }}
+          export WLS_PW
 
 - name: Make changes in stopManagedWebLogic.sh
+  blockinfile:
+    dest: "{{oracle_base }}/config/Domains/{{ domain_name }}/bin/stopManagedWebLogic.sh"
+    marker: "#<!-- {mark} ANSIBLE MANAGED BLOCK -->"
+    insertafter: "#!/bin/sh"
+    content: |
+          ADMIN_URL="t3://{{ admin_server_address }}:{{ admin_server_port }}"
+          WLS_USER={{ weblogic_admin }}
+          export WLS_USER
+          WLS_PW={{ weblogic_admin_pass }}
+          export WLS_PW
+          SERVER_NAME={{ managed_server_name }}
+          export SERVER_NAME
+
+- name: Make changes in startManagedWebLogic.sh - Remove previous settings of ADMIN_URL
   lineinfile:
-          dest: "{{oracle_base }}/config/Domains/{{ domain_name }}/bin/stopManagedWebLogic.sh"
-          state: present
-          regexp: "ADMIN_URL=.*t3"
-          line: "              ADMIN_URL=\"t3://{{ admin_server_address }}:{{ admin_server_port }}\""
+    dest: "{{oracle_base }}/config/Domains/{{ domain_name }}/bin/startManagedWebLogic.sh"
+    regexp: "^ADMIN_URL="
+    state: absent
 
 - name: Make changes in startManagedWebLogic.sh
-  lineinfile:
-          dest: "{{oracle_base }}/config/Domains/{{ domain_name }}/bin/startManagedWebLogic.sh"
-          state: present
-          regexp: "ADMIN_URL=.*http"
-          line: "ADMIN_URL=\"http://{{ admin_server_address }}:{{ admin_server_port }}\""
+  blockinfile:
+    dest: "{{oracle_base }}/config/Domains/{{ domain_name }}/bin/startManagedWebLogic.sh"
+    marker: "#<!-- {mark} ANSIBLE MANAGED BLOCK -->"
+    insertafter: "#!/bin/sh"
+    content: |
+          ADMIN_URL="http://{{ admin_server_address }}:{{ admin_server_port }}"
+          WLS_USER={{ weblogic_admin }}
+          export WLS_USER
+          WLS_PW={{ weblogic_admin_pass }}
+          export WLS_PW
+          SERVER_NAME={{ managed_server_name }}
+          export SERVER_NAME
 
 - name: Make changes in stopWebLogic.sh
-  lineinfile:
-          dest: "{{oracle_base }}/config/Domains/{{ domain_name }}/bin/stopWebLogic.sh"
-          state: present
-          regexp: "ADMIN_URL=.*t3"
-          line: "               ADMIN_URL=\"t3://{{ admin_server_address }}:{{ admin_server_port }}\""
+  blockinfile:
+    dest: "{{oracle_base }}/config/Domains/{{ domain_name }}/bin/stopWebLogic.sh"
+    marker: "#<!-- {mark} ANSIBLE MANAGED BLOCK -->"
+    insertafter: "#!/bin/sh"
+    content: |
+            ADMIN_URL="t3://{{ admin_server_address }}:{{ admin_server_port }}"
+            WLS_USER={{ weblogic_admin }}
+            WLS_PW={{ weblogic_admin_pass }}
+            export WLS_USER
+            export WLS_PW
+            userID={{ weblogic_admin }}
+            password={{ weblogic_admin_pass }}
+            export userID
+            export password
 
