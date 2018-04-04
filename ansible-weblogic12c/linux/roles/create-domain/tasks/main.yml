@@ -6,11 +6,11 @@
   tags:
     - create-domain
 
-#####- name: Execute create domain script
-#####  shell: "{{ middleware_common_home }}/common/bin/wlst.sh {{ mw_installer_folder }}/create-domain.py > {{ oracle_base }}/logs/create_domain_{{ domain_name }}_$(date +'%F').log 2>&1"
-#####  tags:
-#####    - create-domain
-#####
+- name: Execute create domain script
+  shell: "{{ middleware_common_home }}/common/bin/wlst.sh {{ mw_installer_folder }}/create-domain.py > {{ oracle_base }}/logs/create_domain_{{ domain_name }}_$(date +'%F').log 2>&1"
+  tags:
+    - create-domain
+
 - name: Update 'JAVA_OPTIONS' variable within startNodeManager script
   lineinfile:
     dest: "{{ domain_home }}/bin/startNodeManager.sh"
