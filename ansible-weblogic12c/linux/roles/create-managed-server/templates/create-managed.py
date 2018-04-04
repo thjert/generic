@@ -14,7 +14,7 @@ except Exception:
 cd('/Machines/' + '{{ managed_server_address }}' + '/NodeManager/' + '{{ managed_server_address }}')
 cmo.setListenAddress('{{ node_manager_address }}')
 
-cmo.setListenPort('{{ node_manager_port }}')
+cmo.setListenPort({{ node_manager_port }})
 cmo.setNMType('{{ node_manager_type }}')
 
 cd('/')
@@ -23,7 +23,11 @@ cmo.createServer('{{ managed_server_name }}')
 cd('/Servers/' + '{{ managed_server_name }}')
 cmo.setListenAddress('{{ managed_server_address }}')
 cmo.setListenPort({{ managed_server_port }})
+cmo.setListenPortEnabled(true);
 cmo.setMachine(getMBean('/Machines/' + '{{ managed_server_address }}'))
+cmo.setCluster(None);
+cd('/Servers/' + '{{ managed_server_name }}' + '/SSL/' + '{{ managed_server_name }}')
+cmo.setEnabled(false)
 #
 cd('/')
 
@@ -43,6 +47,6 @@ activate(block='true');
 
 # Pga problem med att få upp allting efter den första starten som görs i samband med installationen provar jag med att hårdkoda och lägga in detta.
 nmGenBootStartupProps('{{ admin_server_name }}');
-nmGenBootStartupProps('{{ managed_server_name }}');
+#####nmGenBootStartupProps('{{ managed_server_name }}');
 
 disconnect();
