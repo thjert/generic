@@ -19,7 +19,6 @@
 - name: Execute create managed server script
   shell: '{{middleware_common_home }}/common/bin/wlst.sh {{ mw_installer_folder }}/create-managed.py'
     
-# ==> Start managed server
 - name: Create security folder for managed server
   file: state=directory path={{ domains_home }}/{{ domain_name }}/servers/{{ managed_server_name }}/security
 
@@ -29,11 +28,14 @@
 - name: Copy Start Managed Server Script
   template: src=start-managed-server.py dest={{ mw_installer_folder }}
 
-- name: Start Managed Server
-  shell: "{{ middleware_common_home }}/common/bin/wlst.sh {{ mw_installer_folder }}/start-managed-server.py"
-  async: 1000
-  poll: 0
-
+########## Skall starta från shell-script i stället för från python-script
+########## 
+##########- name: Start Managed Server
+##########  shell: "{{ middleware_common_home }}/common/bin/wlst.sh {{ mw_installer_folder }}/start-managed-server.py"
+##########  async: 1000
+##########  poll: 0
+##########
+# ==> Start managed server
 
 - name: Start Managed Server from script
   shell: "nohup {{ oracle_base }}/config/Domains/{{ domain_name }}/bin/startManagedWebLogic.sh &"

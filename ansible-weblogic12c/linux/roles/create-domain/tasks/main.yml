@@ -38,7 +38,7 @@
     marker: "#<!-- {mark} ANSIBLE MANAGED BLOCK -->"
     insertafter: "^# --- End Functions"
     content: |
-          ADMIN_URL="http://{{ admin_server_address }}:{{ admin_server_port }}"
+          ## This file should not have a setting of ADMIN_URL
           WLS_USER={{ weblogic_admin }}
           export WLS_USER
           WLS_PW={{ weblogic_admin_pass }}
@@ -57,6 +57,12 @@
           export WLS_PW
           SERVER_NAME={{ managed_server_name }}
           export SERVER_NAME
+
+- name: Make changes in startManagedWebLogic.sh - Remove previous settings of ADMIN_URL
+  lineinfile:
+    dest: "{{oracle_base }}/config/Domains/{{ domain_name }}/bin/startManagedWebLogic.sh"
+    regexp: "^ADMIN_URL="
+    state: absent
 
 - name: Make changes in startManagedWebLogic.sh
   blockinfile:
