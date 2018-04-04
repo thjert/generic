@@ -35,6 +35,20 @@
 ##########  async: 1000
 ##########  poll: 0
 ##########
+# ==> Stop admin server - It seems like admin server need to be restarted to recognize managed server
+# ==> Should be restarted automatically by nodemanager
+
+- name: Stop Admin Server from script
+  shell: "nohup {{ oracle_base }}/config/Domains/{{ domain_name }}/bin/stopWebLogic.sh &"
+  async: 1000
+  poll: 0
+
+- pause:
+    prompt: "Wait for Admin Server to go down ... Verify from terminal window"
+
+- name: Wait for Admin Server to startup 
+  wait_for: host={{ admin_server_hostname }} port={{ admin_server_port }} delay=5 timeout=90
+
 # ==> Start managed server
 
 - name: Start Managed Server from script
@@ -47,4 +61,3 @@
 
 - name: Execute create GenBootStartupProps script
   shell: '{{middleware_common_home }}/common/bin/wlst.sh {{ mw_installer_folder }}/create-genboot.py'
-    
