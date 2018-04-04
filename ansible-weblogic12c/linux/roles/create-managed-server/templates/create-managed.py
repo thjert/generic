@@ -14,6 +14,7 @@ except Exception:
 cd('/Machines/' + '{{ managed_server_address }}' + '/NodeManager/' + '{{ managed_server_address }}')
 cmo.setListenAddress('{{ node_manager_address }}')
 
+
 cmo.setListenPort({{ node_manager_port }})
 cmo.setNMType('{{ node_manager_type }}')
 
