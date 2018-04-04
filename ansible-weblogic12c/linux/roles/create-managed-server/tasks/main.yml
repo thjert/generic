@@ -28,20 +28,13 @@
 - name: Copy Start Managed Server Script
   template: src=start-managed-server.py dest={{ mw_installer_folder }}
 
-########## Skall starta från shell-script i stället för från python-script
-########## 
-##########- name: Start Managed Server
-##########  shell: "{{ middleware_common_home }}/common/bin/wlst.sh {{ mw_installer_folder }}/start-managed-server.py"
-##########  async: 1000
-##########  poll: 0
-##########
 # ==> Stop admin server - It seems like admin server need to be restarted to recognize managed server
 # ==> Should be restarted automatically by nodemanager
 
 - name: Stop Admin Server from script
-  shell: "nohup {{ oracle_base }}/config/Domains/{{ domain_name }}/bin/stopWebLogic.sh &"
-  async: 1000
-  poll: 0
+  shell: "{{ oracle_base }}/config/Domains/{{ domain_name }}/bin/stopWebLogic.sh"
+#####  async: 1000
+#####  poll: 0
 
 - pause:
     prompt: "Wait for Admin Server to go down ... Verify from terminal window"
@@ -61,3 +54,15 @@
 
 - name: Execute create GenBootStartupProps script
   shell: '{{middleware_common_home }}/common/bin/wlst.sh {{ mw_installer_folder }}/create-genboot.py'
+
+- name: Stop Managed Server from script
+  shell: "{{ oracle_base }}/config/Domains/{{ domain_name }}/bin/stopManagedWebLogic.sh"
+
+- name: Start Managed Server
+  shell: "{{ middleware_common_home }}/common/bin/wlst.sh {{ mw_installer_folder }}/start-managed-server.py"
+  async: 1000
+  poll: 0
+
+- name: Wait for Managed Server to startup 
+  wait_for: host={{ managed_server_hostname }} port={{ managed_server_port }} delay=5 timeout=90
+
