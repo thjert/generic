@@ -15,7 +15,9 @@ mw_installer: 'fmw_12.2.1.2.0_wls.jar'
 domain_name: 'custom_domain'
 
 # Nodemanager and server settings
-node_manager_address: '192.168.56.14'
+#node_manager_address: '192.168.56.14'
+node_manager_address: '127.0.0.1'
+# Nedastående används ej
 node_manager_hostname: '192.168.56.14'
 node_manager_port: '5556'
 # Pga problem med SSL så ändrade jag till "plain".

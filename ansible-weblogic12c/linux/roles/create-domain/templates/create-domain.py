@@ -64,3 +64,7 @@ cd('../../');
 print "Update domain";
 updateDomain();
 closeDomain();
+# Thomas Hjert: You will need to be connected to a running server to execute this command
+try: nmGenBootStartupProps('{{ admin_server_name }}');
+except Exception:
+  print "Can't run command at this stage just after having created the domain"

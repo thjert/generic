@@ -1,9 +1,25 @@
+---
 # ==> Ansible Role for configure, start and autostart on reboot Node manager
 # ==> for a WebLogic 12c R2 Domain
-- name: Copy Nodemanager Properties file
-  template: src=nodemanager.properties dest={{ domain_home }}/nodemanager/ owner={{ oracle_user }} group={{ oracle_group }}
-  tags:
-    - start-nodemanager
+- name: Fetch files
+  fetch:
+   src: "{{ domain_home }}/nodemanager/nodemanager.properties"
+   dest: /tmp/nm-fore-copy-{{ inventory_hostname }}
+   flat: yes
+   fail_on_missing: no
+
+# Vi använder och utgår från den fil som följer med installationen
+#####- name: Copy Nodemanager Properties file
+#####  template: src=nodemanager.properties dest={{ domain_home }}/nodemanager/ owner={{ oracle_user }} group={{ oracle_group }}
+#####  tags:
+#####    - start-nodemanager
+#####
+- name: Fetch files
+  fetch:
+   src: "{{ domain_home }}/nodemanager/nodemanager.properties"
+   dest: /tmp/nm-efter-copy-{{ inventory_hostname }}
+   flat: yes
+   fail_on_missing: no
 
 # ==> Create startup script for nodemanager
 - name: Copy nodemanager systemd script
@@ -25,3 +41,18 @@
   wait_for: port={{ node_manager_port }} host={{ node_manager_address }} delay=5 timeout=90
   tags:
     - start-nodemanager
+
+- name: Fetch files
+  fetch:
+   src: "{{ domain_home }}/nodemanager/nodemanager.properties"
+   dest: /tmp/nm-efter-start-{{ inventory_hostname }}
+   flat: yes
+   fail_on_missing: no
+
+#####Available from 2.3, running on 2.2.1
+#####- name: Backup of Nodemanager files
+#####   archive: 
+#####    path: "{{ domain_home }}/nodemanager"
+#####    dest: /tmp/nm.tgz
+#####  tags:
+#####    - start-nodemanager
