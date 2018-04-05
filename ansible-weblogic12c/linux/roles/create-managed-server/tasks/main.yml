@@ -1,3 +1,11 @@
+---
+- name: Fetch files
+  fetch:
+   src: "{{ domain_home }}/nodemanager/nodemanager.properties"
+   dest: /tmp/ms-fore-start-{{ inventory_hostname }}
+   flat: yes
+   fail_on_missing: no
+
 # ==> Copy library extensions 
 - name: copy library extensions
   sudo: true
@@ -33,12 +41,7 @@
 
 - name: Stop Admin Server from script
   shell: "{{ oracle_base }}/config/Domains/{{ domain_name }}/bin/stopWebLogic.sh"
-#####  async: 1000
-#####  poll: 0
 
-#####- pause:
-#####    prompt: "Wait for Admin Server to go down ... Verify from terminal window"
-#####
 - name: Wait for Admin Server to startup 
   wait_for: host={{ admin_server_hostname }} port={{ admin_server_port }} delay=5 timeout=90
 
@@ -49,20 +52,26 @@
   async: 1000
   poll: 0
 
+- name: Fetch files
+  fetch:
+   src: "{{ domain_home }}/nodemanager/nodemanager.properties"
+   dest: /tmp/ms-efter-start-{{ inventory_hostname }}
+   flat: yes
+   fail_on_missing: no
+
 - name: Wait for Managed Server to startup 
   wait_for: host={{ managed_server_hostname }} port={{ managed_server_port }} delay=5 timeout=90
 
 - name: Execute create GenBootStartupProps script
   shell: '{{middleware_common_home }}/common/bin/wlst.sh {{ mw_installer_folder }}/create-genboot.py'
 
-#####- name: Stop Managed Server from script
-#####  shell: "{{ oracle_base }}/config/Domains/{{ domain_name }}/bin/stopManagedWebLogic.sh"
-#####
-#####- name: Start Managed Server
-#####  shell: "{{ middleware_common_home }}/common/bin/wlst.sh {{ mw_installer_folder }}/start-managed-server.py"
-#####  async: 1000
-#####  poll: 0
-#####
-#####- name: Wait for Managed Server to startup 
-#####  wait_for: host={{ managed_server_hostname }} port={{ managed_server_port }} delay=5 timeout=90
-#####
+- name: Stop Managed Server from script
+  shell: "{{ oracle_base }}/config/Domains/{{ domain_name }}/bin/stopManagedWebLogic.sh"
+
+- name: Start Managed Server
+  shell: "{{ middleware_common_home }}/common/bin/wlst.sh {{ mw_installer_folder }}/start-managed-server.py"
+  async: 1000
+  poll: 0
+
+- name: Wait for Managed Server to startup 
+  wait_for: host={{ managed_server_hostname }} port={{ managed_server_port }} delay=5 timeout=90
