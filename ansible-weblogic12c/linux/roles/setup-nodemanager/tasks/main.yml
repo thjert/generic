@@ -30,7 +30,6 @@
 - name: Change the NMType
   lineinfile:
     dest: "{{ domain_home }}/nodemanager/nodemanager.properties"
-    regexp: "^ListenPort="
     insertafter: "^ListenPort="
     line: "NMType={{ node_manager_type }}"
 
