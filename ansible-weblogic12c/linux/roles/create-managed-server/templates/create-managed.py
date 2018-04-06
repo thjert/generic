@@ -7,25 +7,26 @@ startEdit();
 # applyJRF(target='{{ managed_server_name }}', domainDir='{{ domain_home }}');
 cd('/')
 
-try: cmo.createMachine('{{ managed_server_address }}')
+try: cmo.createMachine('{{ managed_server_hostname }}')
 except Exception:
-    print "Machine already exists"
+    print "Machine {{ managed_server_hostname }} already exists"
 
-cd('/Machines/' + '{{ managed_server_address }}' + '/NodeManager/' + '{{ managed_server_address }}')
+cd('/Machines/' + '{{ managed_server_hostname }}' + '/NodeManager/' + '{{ managed_server_hostname }}')
 cmo.setListenAddress('{{ node_manager_address }}')
-
-
 cmo.setListenPort({{ node_manager_port }})
 cmo.setNMType('{{ node_manager_type }}')
 
 cd('/')
-cmo.createServer('{{ managed_server_name }}')
+
+try: cmo.createServer('{{ managed_server_name }}')
+except Exception:
+    print "Server {{ managed_server_name }} already exists"
 
 cd('/Servers/' + '{{ managed_server_name }}')
 cmo.setListenAddress('{{ managed_server_address }}')
 cmo.setListenPort({{ managed_server_port }})
 cmo.setListenPortEnabled(true);
-cmo.setMachine(getMBean('/Machines/' + '{{ managed_server_address }}'))
+cmo.setMachine(getMBean('/Machines/' + '{{ managed_server_hostname }}'))
 cmo.setCluster(None);
 cd('/Servers/' + '{{ managed_server_name }}' + '/SSL/' + '{{ managed_server_name }}')
 cmo.setEnabled(false)
@@ -38,7 +39,7 @@ cd('/')
 cd('/Servers/' + '{{ admin_server_name }}')
 #####cmo.setListenAddress('{{ admin_server_address }}')
 #####cmo.setListenPort({{ admin_server_port }})
-cmo.setMachine(getMBean('/Machines/' + '{{ admin_server_address }}'))
+cmo.setMachine(getMBean('/Machines/' + '{{ admin_server_hostname }}'))
 
 # applyJRF(target='{{ managed_server_name }}', domainDir='{{ domain_home }}');
 
