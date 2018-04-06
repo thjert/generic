@@ -40,7 +40,7 @@ cd('/Server/' + '{{ admin_server_name }}');
 cmo.setListenPort({{ admin_server_port }});
 cmo.setListenAddress('{{ admin_server_address }}');
 
-try: cmo.setMachine(getMBean('/Machines/' + '{{ admin_server_address }}'))
+try: cmo.setMachine(getMBean('/Machines/' + '{{ admin_server_hostname }}'))
 except Exception:
     print "setMachine failed"
 

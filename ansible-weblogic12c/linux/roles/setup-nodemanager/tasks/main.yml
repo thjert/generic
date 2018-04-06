@@ -14,6 +14,26 @@
 #####  tags:
 #####    - start-nodemanager
 #####
+
+- name: Change the ListenAddress to be in line whith our configuration.
+  lineinfile:
+    dest: "{{ domain_home }}/nodemanager/nodemanager.properties"
+    regexp: "^ListenAddress="
+    line: "ListenAddress={{ node_manager_hostname }}"
+
+- name: Change the ListenPort to be in line whith our configuration.
+  lineinfile:
+    dest: "{{ domain_home }}/nodemanager/nodemanager.properties"
+    regexp: "^ListenPort="
+    line: "ListenPort={{ node_manager_port }}"
+
+- name: Change the NMType to be in line whith our configuration.
+  lineinfile:
+    dest: "{{ domain_home }}/nodemanager/nodemanager.properties"
+    regexp: "^ListenPort="
+    insertafter: "^ListenPort="
+    line: "NMType={{ node_manager_type }}"
+
 - name: Fetch files
   fetch:
    src: "{{ domain_home }}/nodemanager/nodemanager.properties"

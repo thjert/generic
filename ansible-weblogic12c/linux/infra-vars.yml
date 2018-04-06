@@ -26,8 +26,8 @@ admin_server_hostname: 'wls12c-r2-1.private'
 admin_server_name: 'AdminServer'
 admin_server_port: '7001'
 #
-managed_server_hostname: '192.168.56.14'
-managed_server_address: 'wls12c-r2-1.private'
+managed_server_address: '192.168.56.14'
+managed_server_hostname: 'wls12c-r2-1.private'
 managed_server_name: 'managed_1'
 managed_server_port: '8001'
 #
