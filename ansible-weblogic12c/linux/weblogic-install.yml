@@ -21,6 +21,8 @@
       sudo_user: '{{ oracle_user }}'
     - role: create-managed-server
       sudo_user: '{{ oracle_user }}'
+    - role: start-managed-server
+      sudo_user: '{{ oracle_user }}'
   pre_tasks:
     # ==> Fix hosts file. Remove hostname from local loop. A workaround for
     # remove hostname to local loop
