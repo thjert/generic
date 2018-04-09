@@ -36,7 +36,7 @@ cd("/SecurityConfiguration/" + domain_name);
 cmo.setNodeManagerUsername('{{ nodemanager_username }}');
 cmo.setNodeManagerPasswordEncrypted('{{ nodemanager_password }}');
 
-cd('/Server/' + '{{ admin_server_name }}');
+cd('/Servers/' + '{{ admin_server_name }}');
 cmo.setListenPort({{ admin_server_port }});
 cmo.setListenAddress('{{ admin_server_address }}');
 

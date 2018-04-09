@@ -9,11 +9,6 @@
    fail_on_missing: no
 
 # Vi använder och utgår från den fil som följer med installationen
-#####- name: Copy Nodemanager Properties file
-#####  template: src=nodemanager.properties dest={{ domain_home }}/nodemanager/ owner={{ oracle_user }} group={{ oracle_group }}
-#####  tags:
-#####    - start-nodemanager
-#####
 
 - name: Change the ListenAddress
   lineinfile:

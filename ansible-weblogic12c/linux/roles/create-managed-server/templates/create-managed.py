@@ -31,16 +31,6 @@ cmo.setCluster(None);
 cd('/Servers/' + '{{ managed_server_name }}' + '/SSL/' + '{{ managed_server_name }}')
 cmo.setEnabled(false)
 #
-cd('/')
-
-#
-# Temporärt ligger det här får flyttas senare när det fungerar ...
-#
-cd('/Servers/' + '{{ admin_server_name }}')
-#####cmo.setListenAddress('{{ admin_server_address }}')
-#####cmo.setListenPort({{ admin_server_port }})
-cmo.setMachine(getMBean('/Machines/' + '{{ admin_server_hostname }}'))
-
 # applyJRF(target='{{ managed_server_name }}', domainDir='{{ domain_home }}');
 
 # applyJRF wil call save and activate
@@ -48,6 +38,7 @@ save();
 activate(block='true');
 
 # Pga problem med att få upp allting efter den första starten som görs i samband med installationen provar jag med att hårdkoda och lägga in detta.
+# Funkar ej att köre GenBootStartupProps för Managed Server här.
 nmGenBootStartupProps('{{ admin_server_name }}');
 #####nmGenBootStartupProps('{{ managed_server_name }}');
 
