@@ -1,0 +1,16 @@
+---
+- name: Configure Oracle Linux 7.1 with WebLogic 12c R2 domain
+  hosts: weblogic
+  sudo: True
+  vars_files:
+    # User defined variables for infrastructure
+    - infra-vars.yml
+    # Common properties. You may not delete this
+    - wls-vars.yml
+    # Infrastructure passwords
+    - secrets.yml
+  roles:
+    - role: start-admin-server
+      sudo_user: '{{ oracle_user }}'
+    - role: start-managed-server
+      sudo_user: '{{ oracle_user }}'
